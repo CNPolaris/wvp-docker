@@ -2,7 +2,15 @@ version: '3'
 services:
   ylcx-redis:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-redis:latest
-    restart: always
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - media-net
     ports:
       - 6379:6379
     volumes:
@@ -11,10 +19,18 @@ services:
     environment:
       TZ: "Asia/Shanghai"
     command: redis-server /opt/ylcx/redis/redis.conf --appendonly yes
-  
+
   ylcx-mysql:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-mysql:latest
-    restart: always
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/3306" ]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - media-net
     environment:
       MYSQL_DATABASE: wvp
       MYSQL_ROOT_PASSWORD: root
@@ -36,9 +52,12 @@ services:
           '--default-time-zone=+8:00',
           '--lower-case-table-names=1'
         ]
+
   ylcx-media:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-media:latest
     restart: always
+    networks:
+      - media-net
     ports:
       - "10935:10935"
       - "5540:5540"
@@ -46,9 +65,12 @@ services:
     volumes:
       - ./video:/opt/media/www/record/
       - ./logs/media:/opt/media/log/
+
   ylcx-wvp:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-wvp:latest
     restart: always
+    networks:
+      - media-net
     ports:
       - "18978:18978"
       - "8116:8116/udp"
@@ -95,3 +117,9 @@ services:
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./logs/nginx:/var/log/nginx
+    networks:
+      - media-net
+      
+networks:
+  media-net:
+    driver: bridge
