@@ -36,4 +36,6 @@ mysql/data/
 
 redis/data/
 nginx/html/
-wvp/wvp/
+
+wvp/logs/
+*.jar
