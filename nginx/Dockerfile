@@ -11,7 +11,7 @@ RUN mkdir /opt/dist
 RUN cd /home/wvp-GB28181-pro/web_src && \
     npm install && \
     npm run build && \
-    cp /home/wvp-GB28181-pro/src/main/resources/staitc/* /opt/dist/
+    cp -r /home/wvp-GB28181-pro/src/main/resources/static/* /opt/dist/
 
 FROM nginx:alpine
 ARG TZ=Asia/Shanghai
