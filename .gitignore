@@ -33,7 +33,6 @@ certificates
 video/
 logs/
 mysql/data/
-mysql/db/
 
 redis/data/
 nginx/html/
