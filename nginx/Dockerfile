@@ -7,7 +7,7 @@ RUN cd /home && \
 RUN cd /home/wvp-GB28181-pro/web_src && \
     npm install && \
     npm run build && \
-    cp /home/wvp-GB28181-pro/src/main/resources/staitci/ /opt/ylcx/www
+    cp /home/wvp-GB28181-pro/src/main/resources/staitci/* /opt/ylcx/www/
 
 FROM nginx:latest
 EXPOSE 8080

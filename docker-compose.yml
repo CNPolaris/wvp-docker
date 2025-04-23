@@ -85,11 +85,14 @@ services:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-nginx:latest
     ports:
       - "8080:8080"
+    depends_on:
+      - ylcx-wvp
+    links:
+      - ylcx-wvp  
     environment:
       WVP_HOST: ylcx-wvp
       WVP_PORT: 18978
     volumes:
-      - ./nginx/html/dist:/opt/ylcx/www/
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./logs/nginx:/var/log/nginx
       - ./nginx/conf.d:/etc/nginx/conf.d
