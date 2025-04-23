@@ -9,7 +9,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 USE `wvp`;
 
 /*建表*/
-create table wvp_device
+drop table IF EXISTS wvp_device;
+create table IF NOT EXISTS wvp_device
 (
     id                                  serial primary key,
     device_id                           character varying(50) not null,
@@ -41,12 +42,16 @@ create table wvp_device
     local_ip                            character varying(50),
     password                            character varying(255),
     as_message_channel                  bool    default false,
-    keepalive_interval_time             integer,
+    heart_beat_interval                 integer,
+    heart_beat_count                    integer,
+    position_capability                 integer,
     broadcast_push_after_ack            bool    default false,
+    server_id                           character varying(50),
     constraint uk_device_device unique (device_id)
 );
 
-create table wvp_device_alarm
+drop table IF EXISTS wvp_device_alarm;
+create table IF NOT EXISTS wvp_device_alarm
 (
     id                serial primary key,
     device_id         character varying(50) not null,
@@ -61,7 +66,8 @@ create table wvp_device_alarm
     create_time       character varying(50) not null
 );
 
-create table wvp_device_mobile_position
+drop table IF EXISTS wvp_device_mobile_position;
+create table IF NOT EXISTS wvp_device_mobile_position
 (
     id              serial primary key,
     device_id       character varying(50) not null,
@@ -77,7 +83,8 @@ create table wvp_device_mobile_position
     create_time     character varying(50)
 );
 
-create table wvp_device_channel
+drop table IF EXISTS wvp_device_channel;
+create table IF NOT EXISTS wvp_device_channel
 (
     id                           serial primary key,
     device_id                    character varying(50),
@@ -159,10 +166,16 @@ create table wvp_device_channel
     record_plan_id               integer,
     data_type                    integer not null,
     data_device_id               integer not null,
+    gps_speed                    double precision,
+    gps_altitude                 double precision,
+    gps_direction                double precision,
+    index (data_type),
+    index (data_device_id),
     constraint uk_wvp_unique_channel unique (gb_device_id)
 );
 
-create table wvp_media_server
+drop table IF EXISTS wvp_media_server;
+create table IF NOT EXISTS wvp_media_server
 (
     id                  character varying(255) primary key,
     ip                  character varying(50),
@@ -194,10 +207,12 @@ create table wvp_media_server
     record_path         character varying(255),
     record_day          integer               default 7,
     transcode_suffix    character varying(255),
-    constraint uk_media_server_unique_ip_http_port unique (ip, http_port)
+    server_id           character varying(50),
+    constraint uk_media_server_unique_ip_http_port unique (ip, http_port, server_id)
 );
 
-create table wvp_platform
+drop table IF EXISTS wvp_platform;
+create table IF NOT EXISTS wvp_platform
 (
     id                    serial primary key,
     enable                bool default false,
@@ -233,11 +248,12 @@ create table wvp_platform
     catalog_with_region   integer default 1,
     auto_push_channel     bool default true,
     send_stream_ip        character varying(50),
+    server_id             character varying(50),
     constraint uk_platform_unique_server_gb_id unique (server_gb_id)
 );
 
-
-create table wvp_platform_channel
+drop table IF EXISTS wvp_platform_channel;
+create table IF NOT EXISTS wvp_platform_channel
 (
     id                           serial primary key,
     platform_id                  integer,
@@ -280,7 +296,8 @@ create table wvp_platform_channel
     constraint uk_platform_gb_channel_device_id unique (custom_device_id)
 );
 
-create table wvp_platform_group
+drop table IF EXISTS wvp_platform_group;
+create table IF NOT EXISTS wvp_platform_group
 (
     id          serial primary key,
     platform_id integer,
@@ -288,7 +305,8 @@ create table wvp_platform_group
     constraint uk_wvp_platform_group_platform_id_group_id unique (platform_id, group_id)
 );
 
-create table wvp_platform_region
+drop table IF EXISTS wvp_platform_region;
+create table IF NOT EXISTS wvp_platform_region
 (
     id          serial primary key,
     platform_id integer,
@@ -296,7 +314,8 @@ create table wvp_platform_region
     constraint uk_wvp_platform_region_platform_id_group_id unique (platform_id, region_id)
 );
 
-create table wvp_stream_proxy
+drop table IF EXISTS wvp_stream_proxy;
+create table IF NOT EXISTS wvp_stream_proxy
 (
     id                         serial primary key,
     type                       character varying(50),
@@ -316,11 +335,14 @@ create table wvp_stream_proxy
     name                       character varying(255),
     update_time                character varying(50),
     stream_key                 character varying(255),
+    server_id                  character varying(50),
     enable_disable_none_reader bool default false,
+    relates_media_server_id    character varying(50),
     constraint uk_stream_proxy_app_stream unique (app, stream)
 );
 
-create table wvp_stream_push
+drop table IF EXISTS wvp_stream_push;
+create table IF NOT EXISTS wvp_stream_push
 (
     id                 serial primary key,
     app                character varying(255),
@@ -336,7 +358,9 @@ create table wvp_stream_push
     start_offline_push bool default true,
     constraint uk_stream_push_app_stream unique (app, stream)
 );
-create table wvp_cloud_record
+
+drop table IF EXISTS wvp_cloud_record;
+create table IF NOT EXISTS wvp_cloud_record
 (
     id              serial primary key,
     app             character varying(255),
@@ -345,6 +369,7 @@ create table wvp_cloud_record
     start_time      bigint,
     end_time        bigint,
     media_server_id character varying(50),
+    server_id       character varying(50),
     file_name       character varying(255),
     folder          character varying(500),
     file_path       character varying(500),
@@ -353,7 +378,8 @@ create table wvp_cloud_record
     time_len        bigint
 );
 
-create table wvp_user
+drop table IF EXISTS wvp_user;
+create table IF NOT EXISTS wvp_user
 (
     id          serial primary key,
     username    character varying(255),
@@ -365,7 +391,8 @@ create table wvp_user
     constraint uk_user_username unique (username)
 );
 
-create table wvp_user_role
+drop table IF EXISTS wvp_user_role;
+create table IF NOT EXISTS wvp_user_role
 (
     id          serial primary key,
     name        character varying(50),
@@ -373,18 +400,10 @@ create table wvp_user_role
     create_time character varying(50),
     update_time character varying(50)
 );
-create table wvp_resources_tree
-(
-    id                serial primary key,
-    is_catalog        bool default true,
-    device_channel_id integer,
-    gb_stream_id      integer,
-    name              character varying(255),
-    parentId          integer,
-    path              character varying(255)
-);
 
-create table wvp_user_api_key
+
+drop table IF EXISTS wvp_user_api_key;
+create table IF NOT EXISTS wvp_user_api_key
 (
     id          serial primary key,
     user_id     bigint,
@@ -405,7 +424,8 @@ VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, '2021-04-13 14:14:57'
 INSERT INTO wvp_user_role
 VALUES (1, 'admin', '0', '2021-04-13 14:14:57', '2021-04-13 14:14:57');
 
-CREATE TABLE wvp_common_group
+drop table IF EXISTS wvp_common_group;
+create table IF NOT EXISTS wvp_common_group
 (
     id               serial primary key,
     device_id        varchar(50)  NOT NULL,
@@ -419,7 +439,8 @@ CREATE TABLE wvp_common_group
     constraint uk_common_group_device_platform unique (device_id)
 );
 
-CREATE TABLE wvp_common_region
+drop table IF EXISTS wvp_common_region;
+create table IF NOT EXISTS wvp_common_region
 (
     id               serial primary key,
     device_id        varchar(50)  NOT NULL,
@@ -431,7 +452,8 @@ CREATE TABLE wvp_common_region
     constraint uk_common_region_device_id unique (device_id)
 );
 
-create table wvp_record_plan
+drop table IF EXISTS wvp_record_plan;
+create table IF NOT EXISTS wvp_record_plan
 (
     id              serial primary key,
     snap            bool default false,
@@ -440,7 +462,8 @@ create table wvp_record_plan
     update_time     character varying(50)
 );
 
-create table wvp_record_plan_item
+drop table IF EXISTS wvp_record_plan_item;
+create table IF NOT EXISTS wvp_record_plan_item
 (
     id              serial primary key,
     start           int,
@@ -450,4 +473,297 @@ create table wvp_record_plan_item
     create_time     character varying(50),
     update_time     character varying(50)
 );
+
+/*
+* 20240528
+*/
+DELIMITER //  -- 重定义分隔符避免分号冲突
+CREATE PROCEDURE `wvp_20240528`()
+BEGIN
+    IF NOT EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and  table_name = 'wvp_media_server' and column_name = 'transcode_suffix')
+    THEN
+        ALTER TABLE wvp_media_server ADD transcode_suffix  character varying(255);
+    END IF;
+
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_media_server' and column_name = 'type')
+    THEN
+        alter table wvp_media_server
+            add  type character varying(50) default 'zlm';
+    END IF;
+
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_media_server' and column_name = 'flv_port')
+    THEN
+        alter table wvp_media_server  add flv_port integer;
+    END IF;
+
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_media_server' and column_name = 'flv_ssl_port')
+    THEN
+        alter table wvp_media_server add flv_ssl_port integer;
+    END IF;
+
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_media_server' and column_name = 'ws_flv_port')
+    THEN
+        alter table wvp_media_server add ws_flv_port integer;
+    END IF;
+
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_media_server' and column_name = 'ws_flv_ssl_port')
+    THEN
+        alter table wvp_media_server add ws_flv_ssl_port integer;
+    END IF;
+END; //
+call wvp_20240528();
+DROP PROCEDURE wvp_20240528;
+DELIMITER ;
+
+create table IF NOT EXISTS wvp_user_api_key (
+                                  id serial primary key ,
+                                  user_id bigint,
+                                  app character varying(255) ,
+                                  api_key text,
+                                  expired_at bigint,
+                                  remark character varying(255),
+                                  enable bool default true,
+                                  create_time character varying(50),
+                                  update_time character varying(50)
+);
+
+/*
+* 20241222
+*/
+DELIMITER //  -- 重定义分隔符避免分号冲突
+CREATE PROCEDURE `wvp_20241222`()
+BEGIN
+    IF EXISTS (SELECT column_name FROM information_schema.STATISTICS
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and  table_name = 'wvp_device_channel' and INDEX_NAME = 'uk_wvp_device_channel_unique_device_channel')
+    THEN
+        alter table wvp_device_channel drop index uk_wvp_device_channel_unique_device_channel;
+    END IF;
+
+    IF EXISTS (SELECT column_name FROM information_schema.STATISTICS
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and  table_name = 'wvp_device_channel' and INDEX_NAME = 'uk_wvp_unique_stream_push_id')
+    THEN
+        alter table wvp_device_channel drop index uk_wvp_unique_stream_push_id;
+    END IF;
+
+    IF EXISTS (SELECT column_name FROM information_schema.STATISTICS
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and  table_name = 'wvp_device_channel' and INDEX_NAME = 'uk_wvp_unique_stream_proxy_id')
+    THEN
+        alter table wvp_device_channel drop index uk_wvp_unique_stream_proxy_id;
+    END IF;
+
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_device_channel' and column_name = 'data_type')
+    THEN
+        alter table wvp_device_channel add data_type integer not null;
+    END IF;
+
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_device_channel' and column_name = 'data_device_id')
+    THEN
+        alter table wvp_device_channel add data_device_id integer not null;
+    END IF;
+
+    IF EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_device_channel' and column_name = 'device_db_id')
+    THEN
+        update wvp_device_channel wdc INNER JOIN
+            (SELECT id, device_db_id from wvp_device_channel where device_db_id is not null ) ct on ct.id = wdc.id
+        set wdc.data_type = 1, wdc.data_device_id = ct.device_db_id where wdc.device_db_id is not null;
+        alter table wvp_device_channel drop device_db_id;
+    END IF;
+
+    IF EXISTS (SELECT column_name FROM information_schema.columns
+               WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_device_channel' and column_name = 'stream_push_id')
+    THEN
+        update wvp_device_channel wdc INNER JOIN
+            (SELECT id, stream_push_id from wvp_device_channel where stream_push_id is not null ) ct on ct.id = wdc.id
+        set wdc.data_type = 2, wdc.data_device_id = ct.stream_push_id where wdc.stream_push_id is not null;
+        alter table wvp_device_channel drop stream_push_id;
+    END IF;
+
+    IF EXISTS (SELECT column_name FROM information_schema.columns
+               WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_device_channel' and column_name = 'stream_proxy_id')
+    THEN
+        update wvp_device_channel wdc INNER JOIN
+            (SELECT id, stream_proxy_id from wvp_device_channel where stream_proxy_id is not null ) ct on ct.id = wdc.id
+        set wdc.data_type = 3, wdc.data_device_id = ct.stream_proxy_id where wdc.stream_proxy_id is not null;
+        alter table wvp_device_channel drop stream_proxy_id;
+    END IF;
+END; //
+call wvp_20241222();
+DROP PROCEDURE wvp_20241222;
+DELIMITER ;
+/*
+* 20241231
+*/
+DELIMITER //
+CREATE PROCEDURE `wvp_20241231`()
+BEGIN
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_stream_proxy' and column_name = 'relates_media_server_id')
+    THEN
+        alter table wvp_stream_proxy add relates_media_server_id character varying(50);
+    END IF;
+END; //
+call wvp_20241231();
+DROP PROCEDURE wvp_20241231;
+DELIMITER ;
+/*
+* 20250111
+*/
+DELIMITER //  -- 重定义分隔符避免分号冲突
+CREATE PROCEDURE `wvp_20250111`()
+BEGIN
+    IF EXISTS (SELECT column_name FROM information_schema.STATISTICS
+               WHERE TABLE_SCHEMA = (SELECT DATABASE()) and  table_name = 'wvp_cloud_record' and INDEX_NAME = 'uk_stream_push_app_stream_path')
+    THEN
+        alter table wvp_cloud_record drop index uk_stream_push_app_stream_path ;
+    END IF;
+
+    IF EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_cloud_record' and column_name = 'folder')
+    THEN
+        alter table wvp_cloud_record modify folder varchar(500) null;
+    END IF;
+
+    IF EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_cloud_record' and column_name = 'file_path')
+    THEN
+        alter table wvp_cloud_record modify file_path varchar(500) null;
+    END IF;
+END; //
+call wvp_20250111();
+DROP PROCEDURE wvp_20250111;
+DELIMITER ;
+
+/*
+* 20250211
+*/
+DELIMITER //  -- 重定义分隔符避免分号冲突
+CREATE PROCEDURE `wvp_20250211`()
+BEGIN
+    IF EXISTS (SELECT column_name FROM information_schema.STATISTICS
+               WHERE TABLE_SCHEMA = (SELECT DATABASE()) and  table_name = 'wvp_device' and column_name = 'keepalive_interval_time')
+    THEN
+        alter table wvp_device change keepalive_interval_time heart_beat_interval integer after as_message_channel;
+    END IF;
+
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_device' and column_name = 'heart_beat_count')
+    THEN
+        alter table wvp_device add heart_beat_count integer;
+    END IF;
+
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_device' and column_name = 'position_capability')
+    THEN
+        alter table wvp_device add position_capability integer;
+    END IF;
+END; //
+call wvp_20250211();
+DROP PROCEDURE wvp_20250211;
+DELIMITER ;
+
+/**
+  * 20250312
+ */
+DELIMITER //  -- 重定义分隔符避免分号冲突
+CREATE PROCEDURE `wvp_20250312`()
+BEGIN
+    DECLARE serverId VARCHAR(32) DEFAULT '你的服务ID';
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_device' and column_name = 'server_id')
+    THEN
+        alter table wvp_device add server_id character varying(50);
+        update wvp_device set server_id = serverId;
+    END IF;
+
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_media_server' and column_name = 'server_id')
+    THEN
+        alter table wvp_media_server add server_id character varying(50);
+        update wvp_media_server set server_id = serverId;
+    END IF;
+
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_stream_proxy' and column_name = 'server_id')
+    THEN
+        alter table wvp_stream_proxy add server_id character varying(50);
+        update wvp_stream_proxy set server_id = serverId;
+    END IF;
+
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_cloud_record' and column_name = 'server_id')
+    THEN
+        alter table wvp_cloud_record add server_id character varying(50);
+        update wvp_cloud_record set server_id = serverId;
+    END IF;
+
+    IF not EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and table_name = 'wvp_platform' and column_name = 'server_id')
+    THEN
+        alter table wvp_platform add server_id character varying(50);
+    END IF;
+END; //
+call wvp_20250312();
+DROP PROCEDURE wvp_20250312;
+DELIMITER ;
+
+/*
+* 20250319
+*/
+DELIMITER //  -- 重定义分隔符避免分号冲突
+CREATE PROCEDURE `wvp_20250319`()
+BEGIN
+    IF NOT EXISTS (SELECT column_name FROM information_schema.columns
+               WHERE TABLE_SCHEMA = (SELECT DATABASE()) and  table_name = 'wvp_device_channel' and column_name = 'gps_speed')
+    THEN
+        alter table wvp_device_channel add gps_speed double precision;
+    END IF;
+
+    IF NOT EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and  table_name = 'wvp_device_channel' and column_name = 'gps_altitude')
+    THEN
+        alter table wvp_device_channel add gps_altitude double precision;
+    END IF;
+
+    IF NOT EXISTS (SELECT column_name FROM information_schema.columns
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and  table_name = 'wvp_device_channel' and column_name = 'gps_direction')
+    THEN
+        alter table wvp_device_channel add gps_direction double precision;
+    END IF;
+END; //
+call wvp_20250319();
+DROP PROCEDURE wvp_20250319;
+DELIMITER ;
+
+/*
+* 20250402
+*/
+DELIMITER //  -- 重定义分隔符避免分号冲突
+CREATE PROCEDURE `wvp_20250402`()
+BEGIN
+    IF NOT EXISTS (SELECT column_name FROM information_schema.STATISTICS
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and  table_name = 'wvp_device_channel' and INDEX_NAME = 'data_type')
+    THEN
+        create index data_type on wvp_device_channel (data_type);
+    END IF;
+    IF NOT EXISTS (SELECT column_name FROM information_schema.STATISTICS
+                   WHERE TABLE_SCHEMA = (SELECT DATABASE()) and  table_name = 'wvp_device_channel' and INDEX_NAME = 'data_device_id')
+    THEN
+        create index data_device_id on wvp_device_channel (data_device_id);
+    END IF;
+
+END; //
+call wvp_20250402();
+DROP PROCEDURE wvp_20250402;
+DELIMITER ;
+
+
 
