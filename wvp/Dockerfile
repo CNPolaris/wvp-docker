@@ -1,5 +1,5 @@
 FROM ubuntu:20.04 AS build
-ARG Platfrom=arm64
+ARG Platfrom=amd64
 ARG JDK_NAME
 
 EXPOSE 18978/tcp
@@ -11,10 +11,12 @@ RUN apt-get update && \
          DEBIAN_FRONTEND="noninteractive" \
          apt-get install -y --no-install-recommends \
          wget \
+         cmake \
+         maven \
+         git \
+         ca-certificates \
          tzdata \
          curl \
-         gcc \
-         g++ \
          libpcre3 \
          libpcre3-dev \
          zlib1g-dev \
@@ -46,10 +48,17 @@ ENV PATH ${JAVA_HOME}/bin:$PATH
 
 RUN java -version && javac -version
 
-# 
-RUN mkdir -p /opt/ylcx
-WORKDIR /opt/ylcx
-COPY ./wvp /opt/ylcx
+RUN mkdir -p /opt/wvp
+WORKDIR /opt/wvp
+COPY ./wvp /opt/wvp
 
-WORKDIR /opt/ylcx/wvp
+WORKDIR /home
+RUN cd /home && \
+    git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
+
+RUN cd /home/wvp-GB28181-pro && \
+    mvn clean package -Dmaven.test.skip=true && \
+    cp /home/wvp-GB28181-pro/target/*.jar /opt/wvp/wvp.jar
+
+WORKDIR /opt/wvp
 ENTRYPOINT ["java", "-Xms512m", "-Xmx1024m", "-XX:+HeapDumpOnOutOfMemoryError", "-XX:HeapDumpPath=/opt/ylcx/", "-jar", "wvp.jar", "--spring.config.location=/opt/ylcx/wvp/application.yml"]

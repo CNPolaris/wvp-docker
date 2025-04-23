@@ -90,6 +90,8 @@ services:
       DATABASE_PORT: 3306
       DATABASE_USER: ylcx
       DATABASE_PASSWORD: ylcx
+      # 前端跨域配置，nginx容器所在物理机IP
+      NGINX_HOST: http://127.0.0.1:8080
 
   ylcx-nginx:
     container_name: ylcx-nginx
