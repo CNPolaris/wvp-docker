@@ -95,4 +95,3 @@ services:
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./logs/nginx:/var/log/nginx
-      - ./nginx/conf.d:/etc/nginx/conf.d
