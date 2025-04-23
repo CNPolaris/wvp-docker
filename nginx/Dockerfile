@@ -1,6 +1,7 @@
 
 FROM node:14 as build-stage
 
+
 ENV LANG C.UTF-8
 EXPOSE 8080
 
@@ -11,9 +12,12 @@ RUN mkdir /opt/dist
 RUN cd /home/wvp-GB28181-pro/web_src && \
     npm install && \
     npm run build && \
-    cp -r /home/wvp-GB28181-pro/src/main/resources/static/* /usr/share/nginx/html
+    cp -r /home/wvp-GB28181-pro/src/main/resources/static/* /opt/dist
 
 FROM nginx:alpine
+
+RUN apk add --no-cache bash
+
 ARG TZ=Asia/Shanghai
 RUN \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
