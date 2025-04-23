@@ -32,3 +32,5 @@ cd ./nginx/
 chmod +x ./build.sh
 ./build.sh
 cd ../
+
+./push.sh

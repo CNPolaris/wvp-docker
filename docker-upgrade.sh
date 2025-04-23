@@ -1,5 +1,5 @@
 #/bin/bash
 set -e
 
-./build.sh
-./push.sh
+docker compose down
+docker compose up -d --remove-orphans
