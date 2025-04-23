@@ -15,7 +15,7 @@ services:
       - 6379:6379
     volumes:
       - ./redis/conf/redis.conf:/opt/ylcx/redis/redis.conf
-      - ./redis/data/:/data
+      - ./volumes/redis/data/:/data
     environment:
       TZ: "Asia/Shanghai"
     command: redis-server /opt/ylcx/redis/redis.conf --appendonly yes
@@ -42,7 +42,7 @@ services:
     volumes:
       - ./mysql/conf:/etc/mysql/conf.d
       - ./logs/mysql:/logs
-      - ./mysql/data:/var/lib/mysql  
+      - ./volumes/mysql/data:/var/lib/mysql  
     command: [
           'mysqld',
           '--default-authentication-plugin=mysql_native_password',
@@ -63,7 +63,7 @@ services:
       - "5540:5540"
       - "6080:6080"
     volumes:
-      - ./video:/opt/media/www/record/
+      - ./volumes/video:/opt/media/www/record/
       - ./logs/media:/opt/media/log/
 
   ylcx-wvp:
