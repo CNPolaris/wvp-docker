@@ -41,3 +41,5 @@ wvp/logs/
 *.jar
 
 nginx/dist/
+
+volumes/
