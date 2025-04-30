@@ -75,6 +75,17 @@ services:
       - "18978:18978"
       - "8116:8116/udp"
       - "8116:8116/tcp"
+      - "30000:30000"
+      - "30001:30001"
+      - "30002:30002"
+      - "30003:30003"
+      - "30004:30004"
+      - "30005:30005"
+      - "50502:50502"
+      - "50503:50503"
+      - "50504:50504"
+      - "50505:50505"
+      - "50506:50506"
     depends_on:
       - ylcx-redis
       - ylcx-mysql
@@ -84,8 +95,10 @@ services:
       - ./logs/wvp:/opt/wvp/logs/
     environment:
       # 本机的IP
-      SIP_HOST: 127.0.0.1
+      SIP_HOST: ylcx-wvp
       STREAM_HOST: 127.0.0.1
+      SDP_HOST: 10.10.1.124
+      HOOK_HOST: ylcx-wvp
       ZLM_HOST: ylcx-media
       ZLM_PORT: 6080
       ZLM_SERCERT: su6TiedN2rVAmBbIDX0aa0QTiBJLBdcf

@@ -58,9 +58,9 @@ media:
   # [可选] 返回流地址时的ip，置空使用 media.ip
   stream-ip: ${STREAM_HOST:127.0.0.1}
   # [可选] wvp在国标信令中使用的ip，此ip为摄像机可以访问到的ip， 置空使用 media.ip
-  sdp-ip: ${SIP_HOST:127.0.0.1}
+  sdp-ip: ${SDP_HOST:127.0.0.1}
   # [可选] Hook IP, 默认使用sip.ip
-  hook-ip: ${SIP_HOST:127.0.0.1}
+  hook-ip: ${HOOK_HOST:127.0.0.1}
   # [可选] sslport
   http-ssl-port: 4443
   rtp-proxy-port: 10000
@@ -73,7 +73,7 @@ media:
   # 启用多端口模式, 多端口模式使用端口区分每路流，兼容性更好。 单端口使用流的ssrc区分， 点播超时建议使用多端口测试
   rtp:
     # [可选] 是否启用多端口模式, 开启后会在portRange范围内选择端口用于媒体流传输
-    enable: false
+    enable: true
     # [可选] 
     port-range: 30000,30500 
     # [可选] 

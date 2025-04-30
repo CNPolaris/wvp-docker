@@ -7,6 +7,9 @@ EXPOSE 8116/tcp
 EXPOSE 8116/udp
 EXPOSE 8080/tcp
 
+EXPOSE 30000 30001 30002 30003 30004 30005
+EXPOSE 50502 50503 50504 50505 50506  
+
 RUN apt-get update && \
          DEBIAN_FRONTEND="noninteractive" \
          apt-get install -y --no-install-recommends \
