@@ -89,8 +89,8 @@ services:
     environment:
       TZ: "Asia/Shanghai"
       # 本机的IP
-      SIP_HOST: 127.0.0.1
-      STREAM_HOST: 127.0.0.1
+      SIP_HOST: 10.10.1.124
+      STREAM_HOST: 10.10.1.124
       ZLM_HOST: ylcx-media
       ZLM_PORT: 6080
       ZLM_SERCERT: su6TiedN2rVAmBbIDX0aa0QTiBJLBdcf
@@ -101,7 +101,7 @@ services:
       DATABASE_USER: ylcx
       DATABASE_PASSWORD: ylcx
       # 前端跨域配置，nginx容器所在物理机IP
-      NGINX_HOST: http://127.0.0.1:8080
+      NGINX_HOST: http://10.10.1.124:8080
 
   ylcx-nginx:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-nginx:latest
