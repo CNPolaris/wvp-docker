@@ -53,8 +53,7 @@ services:
 
   polaris-media:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:latest
-    networks:
-      - media-net
+    network_mode: host
     restart: always
     ports:
       - "10935:10935"
