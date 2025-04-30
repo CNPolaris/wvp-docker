@@ -92,8 +92,8 @@ services:
     environment:
       # 本机的IP
       SIP_HOST: polaris-wvp
-      STREAM_HOST: 10.10.1.124
-      SDP_HOST: 10.10.1.124
+      STREAM_HOST: 127.0.0.1
+      SDP_HOST: 127.0.0.1
       HOOK_HOST: polaris-wvp
       ZLM_HOST: polaris-media
       ZLM_PORT: 6080
