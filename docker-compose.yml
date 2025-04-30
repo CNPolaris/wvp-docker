@@ -2,7 +2,8 @@ version: '3'
 services:
   polaris-redis:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-redis:latest
-    network_mode: host
+    networks:
+      - media-net
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
@@ -21,7 +22,8 @@ services:
 
   polaris-mysql:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-mysql:latest
-    network_mode: host
+    networks:
+      - media-net
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/3306" ]
@@ -53,7 +55,8 @@ services:
 
   polaris-media:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:latest
-    network_mode: host
+    networks:
+      - media-net
     restart: always
     ports:
       - "10935:10935"
@@ -65,7 +68,8 @@ services:
 
   polaris-wvp:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-wvp:latest
-    network_mode: host
+    networks:
+      - media-net
     restart: always
     ports:
       - "18978:18978"
@@ -92,8 +96,8 @@ services:
     environment:
       # 本机的IP
       SIP_HOST: polaris-wvp
-      STREAM_HOST: 127.0.0.1
-      SDP_HOST: 127.0.0.1
+      STREAM_HOST: 10.10.1.124
+      SDP_HOST: 10.10.1.124
       HOOK_HOST: polaris-wvp
       ZLM_HOST: polaris-media
       ZLM_PORT: 6080
@@ -110,7 +114,8 @@ services:
 
   polaris-nginx:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-nginx:latest
-    network_mode: host
+    networks:
+      - media-net
     ports:
       - "8080:8080"
     depends_on:
@@ -124,6 +129,6 @@ services:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./logs/nginx:/var/log/nginx
 
-# networks:
-#   media-net:
-#     driver: bridge
+networks:
+  media-net:
+    driver: bridge
