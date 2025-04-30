@@ -84,8 +84,8 @@ services:
       - ./logs/wvp:/opt/wvp/logs/
     environment:
       # 本机的IP
-      SIP_HOST: 10.10.1.124
-      STREAM_HOST: 10.10.1.124
+      SIP_HOST: 127.0.0.1
+      STREAM_HOST: 127.0.0.1
       ZLM_HOST: ylcx-media
       ZLM_PORT: 6080
       ZLM_SERCERT: su6TiedN2rVAmBbIDX0aa0QTiBJLBdcf
