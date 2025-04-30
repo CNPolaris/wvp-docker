@@ -9,8 +9,6 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
-    networks:
-      - media-net
     ports:
       - 6379:6379
     volumes:
@@ -29,8 +27,6 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
-    networks:
-      - media-net
     environment:
       MYSQL_DATABASE: wvp
       MYSQL_ROOT_PASSWORD: root
@@ -56,8 +52,6 @@ services:
   ylcx-media:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-media:latest
     restart: always
-    networks:
-      - media-net
     ports:
       - "10935:10935"
       - "5540:5540"
@@ -69,8 +63,6 @@ services:
   ylcx-wvp:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-wvp:latest
     restart: always
-    networks:
-      - media-net
     ports:
       - "18978:18978"
       - "8116:8116/udp"
@@ -98,8 +90,8 @@ services:
       REDIS_PORT: 6379
       DATABASE_HOST: ylcx-mysql
       DATABASE_PORT: 3306
-      DATABASE_USER: ylcx
-      DATABASE_PASSWORD: ylcx
+      DATABASE_USER: root
+      DATABASE_PASSWORD: root
       # 前端跨域配置，nginx容器所在物理机IP
       NGINX_HOST: http://10.10.1.124:8080
 
@@ -117,9 +109,3 @@ services:
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./logs/nginx:/var/log/nginx
-    networks:
-      - media-net
-      
-networks:
-  media-net:
-    driver: bridge
