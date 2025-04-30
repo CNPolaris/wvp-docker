@@ -1,5 +1,5 @@
 FROM redis
 
-RUN mkdir -p /opt/ylcx/redis
-WORKDIR /opt/ylcx/redis
-COPY ./conf/redis.conf /opt/ylcx/redis/redis.conf
+RUN mkdir -p /opt/polaris/redis
+WORKDIR /opt/polaris/redis
+COPY ./conf/redis.conf /opt/polaris/redis/redis.conf

@@ -51,7 +51,7 @@ sip:
 
 # 默认服务器配置
 media:
-  id: ylcx
+  id: polaris
   # [必须修改] ZLM 内网IP与端口
   ip: ${ZLM_HOST:127.0.0.1}
   http-port: ${ZLM_PORT:6080}

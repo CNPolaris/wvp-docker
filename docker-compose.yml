@@ -1,7 +1,7 @@
 version: '3'
 services:
-  ylcx-redis:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-redis:latest
+  polaris-redis:
+    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-redis:latest
     networks:
       - media-net
     restart: unless-stopped
@@ -14,14 +14,14 @@ services:
     ports:
       - 6379:6379
     volumes:
-      - ./redis/conf/redis.conf:/opt/ylcx/redis/redis.conf
+      - ./redis/conf/redis.conf:/opt/polaris/redis/redis.conf
       - ./volumes/redis/data/:/data
     environment:
       TZ: "Asia/Shanghai"
-    command: redis-server /opt/ylcx/redis/redis.conf --appendonly yes
+    command: redis-server /opt/polaris/redis/redis.conf --appendonly yes
 
-  ylcx-mysql:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-mysql:latest
+  polaris-mysql:
+    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-mysql:latest
     networks:
       - media-net
     restart: unless-stopped
@@ -34,8 +34,8 @@ services:
     environment:
       MYSQL_DATABASE: wvp
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: ylcx
-      MYSQL_PASSWORD: ylcx
+      MYSQL_USER: polaris
+      MYSQL_PASSWORD: polaris
       TZ: Asia/Shanghai
     ports:
       - 3306:3306
@@ -53,8 +53,8 @@ services:
           '--lower-case-table-names=1'
         ]
 
-  ylcx-media:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-media:latest
+  polaris-media:
+    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:latest
     networks:
       - media-net
     restart: always
@@ -66,8 +66,8 @@ services:
       - ./volumes/video:/opt/media/www/record/
       - ./logs/media:/opt/media/log/
 
-  ylcx-wvp:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-wvp:latest
+  polaris-wvp:
+    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-wvp:latest
     networks:
       - media-net
     restart: always
@@ -87,24 +87,24 @@ services:
       - "50505:50505"
       - "50506:50506"
     depends_on:
-      - ylcx-redis
-      - ylcx-mysql
-      - ylcx-media
+      - polaris-redis
+      - polaris-mysql
+      - polaris-media
     volumes:
-      - ./wvp/wvp/:/opt/ylcx/wvp/
+      - ./wvp/wvp/:/opt/wvp/
       - ./logs/wvp:/opt/wvp/logs/
     environment:
       # 本机的IP
-      SIP_HOST: ylcx-wvp
+      SIP_HOST: polaris-wvp
       STREAM_HOST: 127.0.0.1
       SDP_HOST: 10.10.1.124
-      HOOK_HOST: ylcx-wvp
-      ZLM_HOST: ylcx-media
+      HOOK_HOST: polaris-wvp
+      ZLM_HOST: polaris-media
       ZLM_PORT: 6080
       ZLM_SERCERT: su6TiedN2rVAmBbIDX0aa0QTiBJLBdcf
-      REDIS_HOST: ylcx-redis
+      REDIS_HOST: polaris-redis
       REDIS_PORT: 6379
-      MYSQL_HOST: ylcx-mysql
+      MYSQL_HOST: polaris-mysql
       MYSQL_PORT: 3306
       MYSQL_DATABASE: wvp
       MYSQL_USER: root
@@ -112,18 +112,18 @@ services:
       # 前端跨域配置，nginx容器所在物理机IP
       NGINX_HOST: http://10.10.1.124:8080
 
-  ylcx-nginx:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-nginx:latest
+  polaris-nginx:
+    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-nginx:latest
     networks:
       - media-net
     ports:
       - "8080:8080"
     depends_on:
-      - ylcx-wvp
+      - polaris-wvp
     links:
-      - ylcx-wvp  
+      - polaris-wvp  
     environment:
-      WVP_HOST: ylcx-wvp
+      WVP_HOST: polaris-wvp
       WVP_PORT: 18978
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf

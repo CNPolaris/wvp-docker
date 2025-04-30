@@ -3,8 +3,8 @@ set -e
 
 version=2.7.3
 
-docker build -t ylcx-mysql:${version} .
+docker build -t polaris-mysql:${version} .
 rm -rf ./sql
 
-docker tag ylcx-mysql:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-mysql:${version}
-docker tag ylcx-mysql:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-mysql:latest
+docker tag polaris-mysql:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-mysql:${version}
+docker tag polaris-mysql:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-mysql:latest
