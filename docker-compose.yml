@@ -2,8 +2,7 @@ version: '3'
 services:
   polaris-redis:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-redis:latest
-    networks:
-      - media-net
+    network_mode: host
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
@@ -22,8 +21,7 @@ services:
 
   polaris-mysql:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-mysql:latest
-    networks:
-      - media-net
+    network_mode: host
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/3306" ]
@@ -68,8 +66,7 @@ services:
 
   polaris-wvp:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-wvp:latest
-    networks:
-      - media-net
+    network_mode: host
     restart: always
     ports:
       - "18978:18978"
@@ -114,8 +111,7 @@ services:
 
   polaris-nginx:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-nginx:latest
-    networks:
-      - media-net
+    network_mode: host
     ports:
       - "8080:8080"
     depends_on:
@@ -129,6 +125,6 @@ services:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./logs/nginx:/var/log/nginx
 
-networks:
-  media-net:
-    driver: bridge
+# networks:
+#   media-net:
+#     driver: bridge
