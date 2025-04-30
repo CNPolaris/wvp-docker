@@ -2,6 +2,8 @@ version: '3'
 services:
   ylcx-redis:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-redis:latest
+    networks:
+      - media-net
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
@@ -20,6 +22,8 @@ services:
 
   ylcx-mysql:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-mysql:latest
+    networks:
+      - media-net
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/3306" ]
@@ -51,6 +55,8 @@ services:
 
   ylcx-media:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-media:latest
+    networks:
+      - media-net
     restart: always
     ports:
       - "10935:10935"
@@ -62,6 +68,8 @@ services:
 
   ylcx-wvp:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-wvp:latest
+    networks:
+      - media-net
     restart: always
     ports:
       - "18978:18978"
@@ -71,32 +79,30 @@ services:
       - ylcx-redis
       - ylcx-mysql
       - ylcx-media
-    links:
-      - ylcx-redis
-      - ylcx-mysql
-      - ylcx-media
     volumes:
       - ./wvp/wvp/:/opt/ylcx/wvp/
       - ./logs/wvp:/opt/wvp/logs/
     environment:
-      TZ: "Asia/Shanghai"
       # 本机的IP
-      SIP_HOST: 10.10.1.124
-      STREAM_HOST: 10.10.1.124
+      SIP_HOST: 127.0.0.1
+      STREAM_HOST: 127.0.0.1
       ZLM_HOST: ylcx-media
       ZLM_PORT: 6080
       ZLM_SERCERT: su6TiedN2rVAmBbIDX0aa0QTiBJLBdcf
       REDIS_HOST: ylcx-redis
       REDIS_PORT: 6379
-      DATABASE_HOST: ylcx-mysql
-      DATABASE_PORT: 3306
-      DATABASE_USER: root
-      DATABASE_PASSWORD: root
+      MYSQL_HOST: ylcx-mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: wvp
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
       # 前端跨域配置，nginx容器所在物理机IP
       NGINX_HOST: http://10.10.1.124:8080
 
   ylcx-nginx:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/ylcx-nginx:latest
+    networks:
+      - media-net
     ports:
       - "8080:8080"
     depends_on:
@@ -109,3 +115,7 @@ services:
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./logs/nginx:/var/log/nginx
+
+networks:
+  media-net:
+    driver: bridge

@@ -3,14 +3,17 @@ set -e
 
 version=2.7.3
 
-# git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
-# cd wvp-GB28181-pro/web_src && \
-#     npm install && \
-#     npm run build 
+git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
+cd wvp-GB28181-pro/web_src && \
+    npm install && \
+    npm run build 
     
-# cd ../../
-# mkdir -p  ./nginx/dist
-# cp -r wvp-GB28181-pro/src/main/resources/static/* ./nginx/dist
+cd ../../
+mkdir -p  ./nginx/dist
+cp -r wvp-GB28181-pro/src/main/resources/static/* ./nginx/dist
+
+mkdir ./mysql/sql
+cp -r wvp-GB28181-pro/数据库/${version}/*.sql ./mysql/sql/
 
 echo "构建ZLM容器"
 cd ./media/

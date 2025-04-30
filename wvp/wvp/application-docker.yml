@@ -24,11 +24,11 @@ spring:
     timeout: 30000
   # mysql数据源
   datasource:
-      type: com.zaxxer.hikari.HikariDataSource
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://${DATABASE_HOST:127.0.0.1}:${DATABASE_PORT:3306}/wvp?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&serverTimezone=PRC&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
-      username: ${DATABASE_USER:root}
-      password: ${DATABASE_PASSWORD:root}
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:wvp}?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&serverTimezone=PRC&useSSL=false&allowMultiQueries=true
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:root}
 
 #[可选] 监听的HTTP端口, 网页和接口调用都是这个端口
 server:

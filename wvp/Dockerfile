@@ -50,11 +50,10 @@ RUN java -version && javac -version
 
 RUN mkdir -p /opt/wvp
 WORKDIR /opt/wvp
-COPY ./wvp /opt/wvp
 
 WORKDIR /home
 RUN cd /home && \
-    git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
+    git clone https://github.com/648540858/wvp-GB28181-pro.git
 
 RUN cd /home/wvp-GB28181-pro && \
     mvn clean package -Dmaven.test.skip=true && \
