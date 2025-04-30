@@ -1,3 +1,3 @@
 use mysql;
-grant all privileges on wvp.* to 'ylcx'@'%';
+grant all privileges on wvp.* to 'polaris'@'%';
 flush privileges;

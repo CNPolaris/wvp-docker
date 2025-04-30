@@ -43,3 +43,5 @@ wvp/logs/
 nginx/dist/
 
 volumes/
+
+mysql/sql/

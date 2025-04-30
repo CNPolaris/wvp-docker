@@ -12,8 +12,8 @@ version=2.7.3
 # mkdir -p  ./nginx/dist
 # cp -r wvp-GB28181-pro/src/main/resources/static/* ./nginx/dist
 
-mkdir ./mysql/sql
-cp -r wvp-GB28181-pro/数据库/${version}/*.sql ./mysql/sql/
+mkdir -p ./mysql/sql
+cp -r wvp-GB28181-pro/数据库/${version}/* ./mysql/sql/
 
 echo "构建ZLM容器"
 cd ./media/

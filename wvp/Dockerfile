@@ -61,6 +61,6 @@ RUN cd /home && \
 RUN cd /home/wvp-GB28181-pro && \
     mvn clean package -Dmaven.test.skip=true && \
     cp /home/wvp-GB28181-pro/target/*.jar /opt/wvp/wvp.jar
-
+RUN chmod +rx /opt/wvp/wvp.jar
 WORKDIR /opt/wvp
-ENTRYPOINT ["java", "-Xms512m", "-Xmx1024m", "-XX:+HeapDumpOnOutOfMemoryError", "-XX:HeapDumpPath=/opt/wvp/", "-jar", "wvp.jar", "--spring.config.location=/opt/wvp/application.yml"]
+ENTRYPOINT ["java", "-Xms512m", "-Xmx1024m", "-XX:+HeapDumpOnOutOfMemoryError", "-XX:HeapDumpPath=/opt/wvp/", "-jar", "/opt/wvp/wvp.jar", "--spring.config.location=/opt/wvp/conf/application.yml"]
