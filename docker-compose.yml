@@ -52,7 +52,6 @@ services:
   polaris-media:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:latest
     restart: always
-    network_mode: "host"
     ports:
       - "10935:10935"
       - "5540:5540"
@@ -69,7 +68,6 @@ services:
   polaris-wvp:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-wvp:latest
     restart: always
-    network_mode: "host"
     ports:
       - "18978:18978"
       - "8116:8116/udp"
