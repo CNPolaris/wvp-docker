@@ -114,9 +114,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - polaris-wvp
-    links:
-      - polaris-wvp  
+      - polaris-wvp 
     environment:
       WVP_HOST: polaris-wvp
       WVP_PORT: 18978
