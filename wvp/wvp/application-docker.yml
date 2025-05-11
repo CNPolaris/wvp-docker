@@ -75,7 +75,7 @@ media:
     # [可选] 是否启用多端口模式, 开启后会在portRange范围内选择端口用于媒体流传输
     enable: true
     # [可选] 
-    port-range: 30000,30005 
+    port-range: 30000,30500 
     # [可选] 
     send-port-range: 50502,50506 
 
