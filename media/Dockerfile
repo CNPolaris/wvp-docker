@@ -10,6 +10,9 @@ EXPOSE 8000/udp
 EXPOSE 8000/tcp
 EXPOSE 9000/udp
 
+EXPOSE 30000 30001 30002 30003 30004 30005
+EXPOSE 50502 50503 50504 50505 50506 
+
 # ADD sources.list /etc/apt/sources.list
 
 RUN apt-get update && \
