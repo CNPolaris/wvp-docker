@@ -25,6 +25,8 @@ RUN apt-get update && \
          zlib1g-dev \
          openssl \
          libssl-dev \
+         net-tools \
+         iproute2 iputils-ping traceroute \
          gdb && \
          apt-get autoremove -y && \
          apt-get clean -y && \

@@ -29,6 +29,8 @@ RUN apt-get update && \
          libssl-dev \
          gcc \
          g++ \
+         net-tools \
+         iproute2 iputils-ping traceroute \
          gdb && \
          apt-get autoremove -y && \
          apt-get clean -y && \
@@ -76,6 +78,7 @@ RUN apt-get update && \
          ffmpeg \
          gcc \
          g++ \
+         net-tools \
          gdb && \
          apt-get autoremove -y && \
          apt-get clean -y && \
