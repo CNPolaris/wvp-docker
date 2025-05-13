@@ -79,15 +79,15 @@ media:
     # [可选] 
     send-port-range: 50502,50506 
 
-  record-path: /opt/media/record
+  record-path: /opt/media/assist
   record-day: 7
-  record-assist-port: 0
+  record-assist-port: 18081
 user-settings:
     auto-apply-play: true
     play-timeout: 30000
     wait-track: false
-    record-push-live: false
-    record-sip: false
+    record-push-live: true
+    record-sip: true
     stream-on-demand: true
     interface-authentication: false
     broadcast-for-platform: TCP-PASSIVE

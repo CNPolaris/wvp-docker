@@ -66,6 +66,7 @@ services:
       - "9000:9000"
     volumes:
       - ./volumes/video:/opt/media/www/record/
+      - ./volumes/media/assist:/opt/media/assist/
       - ./logs/media:/opt/media/log/
 
   polaris-wvp:
@@ -74,6 +75,7 @@ services:
     restart: always
     ports:
       - "18978:18978"
+      - "18081:18081"
       - "8116:8116/udp"
       - "8116:8116/tcp"
       - "30000:30500"
@@ -86,9 +88,11 @@ services:
       - polaris-media
     volumes:
       - ./wvp/wvp:/opt/wvp/conf/
+      - ./wvp/assist/*.yml:/opt/assist/conf/
       - ./logs/wvp:/opt/wvp/logs/
+      - ./volumes/wvp/assist:/opt/media/assist/
     environment:
-      # 本机的IP
+      # 本机的IP(物理机IP)
       SIP_HOST: 10.10.1.124
       STREAM_HOST: 10.10.1.124
       SDP_HOST: 10.10.1.124

@@ -10,8 +10,7 @@ EXPOSE 8000/udp
 EXPOSE 8000/tcp
 EXPOSE 9000/udp
 
-EXPOSE 30000-30500
-EXPOSE 50502-50506 
+
 
 # ADD sources.list /etc/apt/sources.list
 
@@ -35,7 +34,8 @@ RUN apt-get update && \
          apt-get autoremove -y && \
          apt-get clean -y && \
          rm -rf /var/lib/apt/lists/*
-
+         
+RUN mkdir -p /opt/media/assist
 RUN mkdir -p /opt/media
 WORKDIR /opt/media
 RUN git clone --depth 1 https://gitee.com/xia-chu/ZLMediaKit && \
