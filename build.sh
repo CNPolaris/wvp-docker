@@ -3,15 +3,17 @@ set -e
 
 version=2.7.3
 
-# git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
-# cd wvp-GB28181-pro/web_src && \
-#     npm install && \
-#     npm run build 
+echo "物理机编译前端"
+git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
+cd wvp-GB28181-pro/web_src && \
+    npm install && \
+    npm run build 
     
-# cd ../../
-# mkdir -p  ./nginx/dist
-# cp -r wvp-GB28181-pro/src/main/resources/static/* ./nginx/dist
+cd ../../
+mkdir -p  ./nginx/dist
+cp -r wvp-GB28181-pro/src/main/resources/static/* ./nginx/dist
 
+echo "复制初始化数据库"
 mkdir -p ./mysql/sql
 cp -r wvp-GB28181-pro/数据库/${version}/* ./mysql/sql/
 
