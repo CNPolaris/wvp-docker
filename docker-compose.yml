@@ -91,14 +91,14 @@ services:
       # 本机的IP
       SIP_HOST: 10.10.1.124
       STREAM_HOST: 10.10.1.124
-      SDP_HOST: 10.10.1.124
-      HOOK_HOST: 10.10.1.124
-      ZLM_HOST: 10.10.1.124
+      SDP_HOST: 127.0.0.1
+      HOOK_HOST: 127.0.0.1
+      ZLM_HOST: 127.0.0.1
       ZLM_PORT: 6080
       ZLM_SERCERT: su6TiedN2rVAmBbIDX0aa0QTiBJLBdcf
-      REDIS_HOST: 10.10.1.124
+      REDIS_HOST: 127.0.0.1
       REDIS_PORT: 6379
-      MYSQL_HOST: 10.10.1.124
+      MYSQL_HOST: 127.0.0.1
       MYSQL_PORT: 3306
       MYSQL_DATABASE: wvp
       MYSQL_USER: root
