@@ -2,8 +2,7 @@ version: '3'
 services:
   polaris-redis:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-redis:latest
-    networks:
-      - custom_bridge
+    network_mode: "host"
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
@@ -22,8 +21,7 @@ services:
 
   polaris-mysql:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-mysql:latest
-    networks:
-      - custom_bridge
+    network_mode: "host"
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/3306" ]
@@ -55,8 +53,7 @@ services:
 
   polaris-media:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:latest
-    networks:
-      - custom_bridge
+    network_mode: "host"
     restart: always
     ports:
       - "10935:10935"
@@ -73,8 +70,7 @@ services:
 
   polaris-wvp:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-wvp:latest
-    networks:
-      - custom_bridge
+    network_mode: "host"
     restart: always
     ports:
       - "18978:18978"
@@ -93,16 +89,16 @@ services:
       - ./logs/wvp:/opt/wvp/logs/
     environment:
       # 本机的IP
-      SIP_HOST: polaris-wvp
+      SIP_HOST: 10.10.1.124
       STREAM_HOST: 10.10.1.124
       SDP_HOST: 10.10.1.124
-      HOOK_HOST: polaris-wvp
-      ZLM_HOST: polaris-media
+      HOOK_HOST: 10.10.1.124
+      ZLM_HOST: 10.10.1.124
       ZLM_PORT: 6080
       ZLM_SERCERT: su6TiedN2rVAmBbIDX0aa0QTiBJLBdcf
-      REDIS_HOST: polaris-redis
+      REDIS_HOST: 10.10.1.124
       REDIS_PORT: 6379
-      MYSQL_HOST: polaris-mysql
+      MYSQL_HOST: 10.10.1.124
       MYSQL_PORT: 3306
       MYSQL_DATABASE: wvp
       MYSQL_USER: root
@@ -112,8 +108,7 @@ services:
 
   polaris-nginx:
     image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-nginx:latest
-    networks:
-      - custom_bridge
+    network_mode: "host"
     ports:
       - "8080:8080"
     depends_on:
@@ -124,7 +119,3 @@ services:
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./logs/nginx:/var/log/nginx
-
-networks:
-  custom_bridge:
-    driver: bridge
