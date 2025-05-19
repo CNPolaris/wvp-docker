@@ -1,5 +1,5 @@
 FROM ubuntu:20.04 AS build
-ARG Platfrom=amd64
+
 ARG JDK_NAME
 
 EXPOSE 18978/tcp
@@ -37,23 +37,23 @@ RUN apt-get update && \
 # install jdk1.8
 RUN mkdir -p /opt/download
 WORKDIR /opt/download
-RUN if [ "$Platfrom" = "arm64" ]; \
-    then \
-        wget https://polaris-tian-generic.pkg.coding.net/qt/autopliot/jdk-8u411-linux-aarch64.tar.gz?version=latest --no-check-certificate -O jdk-8.tar.gz && \
-        tar -zxvf /opt/download/jdk-8.tar.gz -C /usr/local/ --transform 's/jdk1.8.0_411/java/' && \
-        rm /opt/download/jdk-8.tar.gz; \
-    else \
-        wget https://polaris-tian-generic.pkg.coding.net/qt/autopliot/jdk-8u202-linux-x64.tar.gz?version=latest --no-check-certificate -O jdk-8.tar.gz && \
-        tar -zxvf /opt/download/jdk-8.tar.gz -C /usr/local/ --transform 's/jdk1.8.0_202/java/' && \
-        rm /opt/download/jdk-8.tar.gz; \
+
+RUN RUN Platfrom=$(uname -m); \
+    if [ "$Platfrom" = "x86_64" ]; \
+        then \
+            wget https://polaris-tian-generic.pkg.coding.net/qt/autopliot/jdk-8u411-linux-aarch64.tar.gz?version=latest --no-check-certificate -O jdk-8.tar.gz && \
+            tar -zxvf /opt/download/jdk-8.tar.gz -C /usr/local/ --transform 's/jdk1.8.0_411/java/' && \
+            rm /opt/download/jdk-8.tar.gz; \
+        else \
+            wget https://polaris-tian-generic.pkg.coding.net/qt/autopliot/jdk-8u202-linux-x64.tar.gz?version=latest --no-check-certificate -O jdk-8.tar.gz && \
+            tar -zxvf /opt/download/jdk-8.tar.gz -C /usr/local/ --transform 's/jdk1.8.0_202/java/' && \
+            rm /opt/download/jdk-8.tar.gz; \
     fi
 
 ENV JAVA_HOME /usr/local/java/
 ENV JRE_HOME ${JAVA_HOME}/jre
 ENV CLASSPATH .:${JAVA_HOME}/lib:${JRE_HOME}/lib 
 ENV PATH ${JAVA_HOME}/bin:$PATH 
-
-RUN java -version && javac -version
 
 # 录像存储位置
 RUN mkdir -p /opt/media/assist

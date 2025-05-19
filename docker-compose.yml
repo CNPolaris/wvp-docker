@@ -88,7 +88,7 @@ services:
       - polaris-media
     volumes:
       - ./wvp/wvp:/opt/wvp/conf/
-      - ./wvp/assist/*.yml:/opt/assist/conf/
+      - ./wvp/assist/conf:/opt/assist/conf/
       - ./logs/wvp:/opt/wvp/logs/
       - ./volumes/wvp/assist:/opt/media/assist/
     environment:
