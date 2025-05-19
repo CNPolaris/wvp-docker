@@ -4,7 +4,7 @@ set -e
 version=2.7.3
 
 echo "物理机编译前端"
-git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
+git clone https://github.com/648540858/wvp-GB28181-pro.git
 cd wvp-GB28181-pro/web_src && \
     npm install && \
     npm run build 
