@@ -118,8 +118,8 @@ services:
     depends_on:
       - polaris-wvp
     environment:
-      WVP_HOST: 10.10.1.124
-      WVP_PORT: 18978
+      - WVP_HOST=10.10.1.124
+      - WVP_PORT=18978
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./logs/nginx:/var/log/nginx
