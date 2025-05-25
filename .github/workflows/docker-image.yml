@@ -7,11 +7,17 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
+    
+    defaults:
+      run:
+        shell: bash
+        
+    env:
+      CODING_USER: ${{ secrets.CODING_USER }}
+      CODING_PASSWD: ${{ secrets.CODING_PASSWD }}
+  
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -23,10 +29,7 @@ jobs:
 
       - name: Push Docker Image
         working-directory:  ${{ github.workspace }}
-        env:
-          CODING_USER: ${{ env.CODING_USER }}
-          CODING_PASSWD: ${{ env.CODING_PASSWD }}
-        run: docker login -u "$CODING_USER" -p "$CODING_PASSWD" polaris-tian-docker.pkg.coding.net && chmod +x ./push.sh && ./push.sh
+        run: docker login -u ${{ env.CODING_USER }} -p ${{ env.CODING_PASSWD }} polaris-tian-docker.pkg.coding.net && chmod +x ./push.sh && ./push.sh
 
     
     
