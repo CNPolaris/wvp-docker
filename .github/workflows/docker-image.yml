@@ -16,9 +16,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Build Docker Image
-        working-directory:  ${{ github.workspace }}
-        run: chmod +x ./build.sh && ./build.sh
+      # - name: Build Docker Image
+      #   working-directory:  ${{ github.workspace }}
+      #   run: chmod +x ./build.sh && ./build.sh
 
 
       - name: Push Docker Image
