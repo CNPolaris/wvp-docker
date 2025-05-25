@@ -24,8 +24,8 @@ jobs:
       - name: Push Docker Image
         working-directory:  ${{ github.workspace }}
         env:
-          CODING_USER: ${{ secrets.CODING_USER }}
-          CODING_PASSWD: ${{ secrets.CODING_PASSWD }}
+          CODING_USER: ${{ env.CODING_USER }}
+          CODING_PASSWD: ${{ env.CODING_PASSWD }}
         run: docker login -u "$CODING_USER" -p "$CODING_PASSWD" polaris-tian-docker.pkg.coding.net && chmod +x ./push.sh && ./push.sh
 
     
