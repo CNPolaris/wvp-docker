@@ -1,17 +1,17 @@
 #/bin/bash
 set -e
 
-version=2.7.3
+version=2.7.4
 workspace=$(pwd)
 
 echo "物理机编译前端"
 if [ -d "$workspace/wvp-GB28181-pro" ]; then
   cd $workspace/wvp-GB28181-pro && git pull
 else
-  git clone https://github.com/648540858/wvp-GB28181-pro.git  
+  git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git  
 fi
 
-cd $workspace/wvp-GB28181-pro/web_src && \
+cd $workspace/wvp-GB28181-pro/web && \
     npm install && \
     npm run build 
     
