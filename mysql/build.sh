@@ -1,7 +1,7 @@
 #/bin/bash
 set -e
 
-version=2.7.3
+version=2.7.4
 
 if [ "$(uname -m)" == "x86_64" ]; then
   arch=amd64
