@@ -63,7 +63,7 @@ WORKDIR /opt/wvp
 
 WORKDIR /home
 RUN cd /home && \
-    git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
+    git clone https://github.com/648540858/wvp-GB28181-pro.git
 
 RUN cd /home/wvp-GB28181-pro && \
     mvn clean package -Dmaven.test.skip=true && \
@@ -75,7 +75,7 @@ RUN mkdir -p /opt/assist
 COPY ./assist/run.sh /opt/assist
 WORKDIR /home
 RUN cd /home && \
-    git clone https://gitee.com/pan648540858/wvp-pro-assist.git
+    git clone https://github.com/648540858/wvp-pro-assist.git
 
 RUN cd /home/wvp-pro-assist && \
     mvn clean package -Dmaven.test.skip=true && \
