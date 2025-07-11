@@ -20,7 +20,7 @@ services:
     command: redis-server /opt/polaris/redis/redis.conf --appendonly yes
 
   polaris-mysql:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-mysql:2.7.4
+    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-mysql:latest
     network_mode: "host"
     restart: unless-stopped
     healthcheck:
@@ -52,7 +52,7 @@ services:
         ]
 
   polaris-media:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:2.7.4
+    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:latest
     network_mode: "host"
     restart: always
     ports:
@@ -71,7 +71,7 @@ services:
       - ./media/config.ini:/opt/media/ZLMediaKit/release/linux/Debug/config.ini
 
   polaris-wvp:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-wvp:2.7.4
+    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-wvp:latest
     network_mode: "host"
     restart: always
     ports:
@@ -112,7 +112,7 @@ services:
       NGINX_HOST: http://10.10.1.124:8080
 
   polaris-nginx:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-nginx:2.7.4
+    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-nginx:latest
     network_mode: "host"
     ports:
       - "8080:8080"
