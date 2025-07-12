@@ -10,6 +10,6 @@ else
   arch=amd64
 fi
 
-docker build -t polaris-media:${version} .
+docker build --build-arg MODEL=Release -t polaris-media:${version} .
 docker tag polaris-media:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:${version}-linux-${arch}
 docker tag polaris-media:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:latest-linux-${arch}
