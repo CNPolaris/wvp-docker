@@ -63,7 +63,7 @@ WORKDIR /opt/wvp
 
 WORKDIR /home
 RUN cd /home && \
-    git clone https://github.com/648540858/wvp-GB28181-pro.git
+    git clone -b 2.7.3 https://github.com/648540858/wvp-GB28181-pro.git
 
 RUN cd /home/wvp-GB28181-pro && \
     mvn clean package -Dmaven.test.skip=true && \
