@@ -37,6 +37,7 @@ main:
         - docker
       env:
         IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest
+        REDIS_IMAGE_NAME: polaris-redis
       stages:
         - name: await the amd64
           type: cnb:await
@@ -57,7 +58,7 @@ main:
         - name: remove tag
           type: artifact:remove-tag
           options:
-            name: ${CNB_REPO_NAME}
+            name: ${REDIS_IMAGE_NAME}
             tags:
               - latest-linux-amd64
               - latest-linux-arm64
