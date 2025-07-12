@@ -36,8 +36,10 @@ main:
     - services:
         - docker
       env:
-        IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest
+        REDIS_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest
         REDIS_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-redis
+        MYSQL_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:latest
+        MYSQL_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-mysql
       stages:
         - name: await the amd64
           type: cnb:await
@@ -47,15 +49,23 @@ main:
           type: cnb:await
           options:
             key: build-arm64
-        - name: manifest
+        - name: manifest-redis
           image: cnbcool/manifest
           settings:
-            target: ${IMAGE_TAG}
-            template: ${IMAGE_TAG}-OS-ARCH
+            target: ${REDIS_IMAGE_TAG}
+            template: ${REDIS_IMAGE_TAG}-OS-ARCH
             platforms:
               - linux/amd64
               - linux/arm64
-        - name: remove tag
+        - name: manifest-mysql
+          image: cnbcool/manifest
+          settings:
+            target: ${MYSQL_IMAGE_TAG}
+            template: ${MYSQL_IMAGE_TAG}-OS-ARCH
+            platforms:
+              - linux/amd64
+            
+        - name: remove tag redis
           type: artifact:remove-tag
           options:
             name: ${REDIS_IMAGE_NAME}
@@ -63,3 +73,11 @@ main:
               - latest-linux-amd64
               - latest-linux-arm64
             type: docker
+
+        - name: remove tag mysql
+          type: artifact:remove-tag
+          options:
+            name: ${MYSQL_IMAGE_NAME}
+            tags:
+              - latest-linux-amd64
+              - latest-linux-arm64

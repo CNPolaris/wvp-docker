@@ -11,9 +11,11 @@ else
   arch=amd64
 fi
 
-# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:latest
-# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:latest
 docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest-linux-${arch}
+
+docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql::latest-linux-${arch}
+
+# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:latest
 # docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:latest
 # docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:latest
 
@@ -26,3 +28,4 @@ docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest-linux-$
 # docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:${arch}
 # docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:${arch}
 # docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:${arch}
+
