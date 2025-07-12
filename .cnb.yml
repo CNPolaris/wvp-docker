@@ -59,6 +59,6 @@ main:
           options:
             name: ${CNB_REPO_NAME}
             tags:
-              - amd64
-              - arm64
+              - latest-linux-amd64
+              - latest-linux-arm64
             type: docker

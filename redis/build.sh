@@ -13,4 +13,4 @@ fi
 docker build -t polaris-redis:${arch} .
 docker tag polaris-redis:${arch} docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:${version}
 docker tag polaris-redis:${arch} docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:${arch}
-docker tag polaris-redis:${arch} docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest
+docker tag polaris-redis:${arch} docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest-linux-${arch}
