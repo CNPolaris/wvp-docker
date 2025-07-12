@@ -35,6 +35,8 @@ main:
 
     - services:
         - docker
+      env:
+        IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest
       stages:
         - name: await the amd64
           type: cnb:await

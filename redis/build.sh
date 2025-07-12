@@ -10,7 +10,7 @@ else
   arch=amd64
 fi
 
-docker build -t polaris-redis:${version} .
-docker tag polaris-redis:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:${version}
-docker tag polaris-redis:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:${arch}
-docker tag polaris-redis:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest
+docker build -t polaris-redis:${arch} .
+docker tag polaris-redis:${arch} docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:${version}
+docker tag polaris-redis:${arch} docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:${arch}
+docker tag polaris-redis:${arch} docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest
