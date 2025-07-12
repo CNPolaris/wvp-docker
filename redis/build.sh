@@ -11,6 +11,4 @@ else
 fi
 
 docker build -t polaris-redis:${version} .
-# docker tag polaris-redis:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:${version}
-# docker tag polaris-redis:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:${arch}
 docker tag polaris-redis:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest-linux-${arch}

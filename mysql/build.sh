@@ -15,5 +15,4 @@ docker build -t polaris-mysql:${version} .
 rm -rf ./sql
 
 docker tag polaris-mysql:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:${version}-linux-${arch}
-# docker tag polaris-mysql:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:${arch}
 docker tag polaris-mysql:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:latest-linux-${arch}

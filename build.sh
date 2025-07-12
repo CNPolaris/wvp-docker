@@ -22,9 +22,9 @@ echo "复制初始化数据库"
 mkdir -p $workspace/mysql/sql
 cp -r $workspace/wvp-GB28181-pro/数据库/${version}/* $workspace/mysql/sql/
 
-# echo "构建ZLM容器"
-# cd $workspace/media/
-# chmod +x ./build.sh && ./build.sh
+echo "构建ZLM容器"
+cd $workspace/media/
+chmod +x ./build.sh && ./build.sh
 
 # echo "构建数据库容器"
 cd $workspace/mysql/
