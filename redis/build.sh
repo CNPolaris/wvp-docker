@@ -1,23 +1,16 @@
 #/bin/bash
 set -e
 
-while getopts c:t:p:m:v:  opt
-do
-	case $opt in
-		v)
-			version=$OPTARG
-			;;
-		p)
-			platform=$OPTARG
-			;;
-		?)
-			echo "unkonwn"
-			exit
-			;;
-       esac
-done
+version=2.7.4
+if [ "$(uname -m)" == "x86_64" ]; then
+  arch=amd64
+elif [ "$(uname -m)" == "aarch64" ]; then
+  arch=arm64
+else
+  arch=amd64
+fi
 
-docker buildx build --platform=$platform -t polaris-redis:${version} . 
+docker build -t polaris-redis:${version} .
 docker tag polaris-redis:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-redis:${version}
-docker tag polaris-wvp:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-wvp:${platform}
+docker tag polaris-redis:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-redis:${arch}
 docker tag polaris-redis:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-redis:latest
