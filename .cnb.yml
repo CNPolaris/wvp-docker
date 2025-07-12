@@ -43,6 +43,10 @@
         MYSQL_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:${VERSION}
         MEDIA_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-media
         MEDIA_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:${VERSION}
+        NGINX_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-nginx
+        NGINX_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:${VERSION}
+        WVP_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-wvp
+        WVP_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:${VERSION}
       stages:
         - name: await the amd64
           type: cnb:await
@@ -52,6 +56,7 @@
           type: cnb:await
           options:
             key: build-arm64
+
         - name: manifest-redis
           image: cnbcool/manifest
           settings:
@@ -60,6 +65,14 @@
             platforms:
               - linux/amd64
               - linux/arm64
+        - name: remove tag redis
+          type: artifact:remove-tag
+          options:
+            name: ${REDIS_IMAGE_NAME}
+            tags:
+              - latest-linux-amd64
+              - latest-linux-arm64
+            type: docker
               
         - name: manifest-mysql
           image: cnbcool/manifest
@@ -70,24 +83,6 @@
               - linux/amd64
               - linux/arm64
 
-        # - name: manifest-media
-        #   image: cnbcool/manifest
-        #   settings:
-        #     target: ${MEDIA_IMAGE_TAG}
-        #     template: ${MEDIA_IMAGE_TAG}-OS-ARCH
-        #     platforms:
-        #       - linux/amd64
-        #       - linux/arm64
-              
-        - name: remove tag redis
-          type: artifact:remove-tag
-          options:
-            name: ${REDIS_IMAGE_NAME}
-            tags:
-              - latest-linux-amd64
-              - latest-linux-arm64
-            type: docker
-
         - name: remove tag mysql
           type: artifact:remove-tag
           options:
@@ -96,10 +91,53 @@
               - ${VERSION}-linux-amd64
               - ${VERSION}-linux-arm64
 
-        # - name: remove tag media
-        #   type: artifact:remove-tag
-        #   options:
-        #     name: ${MEDIA_IMAGE_NAME}
-        #     tags:
-        #       - ${VERSION}-linux-amd64
-        #       - ${VERSION}-linux-arm64
+        - name: manifest-media
+          image: cnbcool/manifest
+          settings:
+            target: ${MEDIA_IMAGE_TAG}
+            template: ${MEDIA_IMAGE_TAG}-OS-ARCH
+            platforms:
+              - linux/amd64
+              - linux/arm64
+              
+        - name: remove tag media
+          type: artifact:remove-tag
+          options:
+            name: ${MEDIA_IMAGE_NAME}
+            tags:
+              - ${VERSION}-linux-amd64
+              - ${VERSION}-linux-arm64
+
+        - name: manifest-nginx
+          image: cnbcool/manifest
+          settings:
+            target: ${NGINX_IMAGE_TAG}
+            template: ${NGINX_IMAGE_TAG}-OS-ARCH
+            platforms:
+              - linux/amd64
+              - linux/arm64
+              
+        - name: remove tag nginx
+          type: artifact:remove-tag
+          options:
+            name: ${NGINX_IMAGE_NAME}
+            tags:
+              - ${VERSION}-linux-amd64
+              - ${VERSION}-linux-arm64
+
+        - name: manifest-wvp
+          image: cnbcool/manifest
+          settings:
+            target: ${WVP_IMAGE_TAG}
+            template: ${WVP_IMAGE_TAG}-OS-ARCH
+            platforms:
+              - linux/amd64
+              - linux/arm64
+              
+        - name: remove tag wvp
+          type: artifact:remove-tag
+          options:
+            name: ${WVP_IMAGE_NAME}
+            tags:
+              - ${VERSION}-linux-amd64
+              - ${VERSION}-linux-arm64

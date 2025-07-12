@@ -17,17 +17,11 @@ docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest-linux-$
 docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:${version}-linux-${arch}
 
 # docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:latest-linux-${arch}
-# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:${version}-linux-${arch}
+docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:${version}-linux-${arch}
 
-# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:latest
-# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:latest
+# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:latest-linux-${arch}
+docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:${version}-linux-${arch}
 
-# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:${version}
-# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:${version}
-# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:${version}
-
-# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:${arch}
-# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:${arch}
-# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:${arch}
-# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:${arch}
+# docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:latest-linux-${arch}
+docker push docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:${version}-linux-${arch}
 
