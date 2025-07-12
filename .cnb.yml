@@ -62,7 +62,16 @@ main:
             platforms:
               - linux/amd64
               - linux/arm64
-              
+
+        - name: remove tag redis
+          type: artifact:remove-tag
+          options:
+            name: ${REDIS_IMAGE_NAME}
+            tags:
+              - latest-linux-amd64
+              - latest-linux-arm64
+            type: docker
+
         - name: manifest-mysql
           image: cnbcool/manifest
           settings:
@@ -81,33 +90,6 @@ main:
               - linux/amd64
               - linux/arm64
 
-        - name: manifest-media
-          image: cnbcool/manifest
-          settings:
-            target: ${MEDIA_IMAGE_TAG}
-            template: ${MEDIA_IMAGE_TAG}-OS-ARCH
-            platforms:
-              - linux/amd64
-              - linux/
-              
-        - name: manifest-media-version
-          image: cnbcool/manifest
-          settings:
-            target: ${MEDIA_IMAGE_TAG_VERSION}
-            template: ${MEDIA_IMAGE_TAG_VERSION}-OS-ARCH
-            platforms:
-              - linux/amd64
-              - linux/arm64
-
-        - name: remove tag redis
-          type: artifact:remove-tag
-          options:
-            name: ${REDIS_IMAGE_NAME}
-            tags:
-              - latest-linux-amd64
-              - latest-linux-arm64
-            type: docker
-
         - name: remove tag mysql
           type: artifact:remove-tag
           options:
@@ -117,6 +99,24 @@ main:
               - latest-linux-arm64
               - ${VERSION}-linux-amd64
               - ${VERSION}-linux-arm64
+
+        - name: manifest-media
+          image: cnbcool/manifest
+          settings:
+            target: ${MEDIA_IMAGE_TAG}
+            template: ${MEDIA_IMAGE_TAG}-OS-ARCH
+            platforms:
+              - linux/amd64
+              - linux/arm64
+              
+        - name: manifest-media-version
+          image: cnbcool/manifest
+          settings:
+            target: ${MEDIA_IMAGE_TAG_VERSION}
+            template: ${MEDIA_IMAGE_TAG_VERSION}-OS-ARCH
+            platforms:
+              - linux/amd64
+              - linux/arm64
 
         - name: remove tag media
           type: artifact:remove-tag
