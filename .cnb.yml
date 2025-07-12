@@ -54,3 +54,11 @@ main:
             platforms:
               - linux/amd64
               - linux/arm64
+        - name: remove tag
+          type: artifact:remove-tag
+          options:
+            name: ${CNB_REPO_NAME}
+            tags:
+              - amd64
+              - arm64
+            type: docker
