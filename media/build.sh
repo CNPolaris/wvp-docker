@@ -11,6 +11,6 @@ else
 fi
 
 docker build -t polaris-media:${version} .
-docker tag polaris-media:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:${version}
-docker tag polaris-media:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:${arch}
-docker tag polaris-media:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:latest
+# docker tag polaris-media:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:${version}
+docker tag polaris-media:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:${version}
+docker tag polaris-media:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:latest-linux-${arch}

@@ -36,10 +36,15 @@ main:
     - services:
         - docker
       env:
+        VERSION: 2.7.4
         REDIS_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest
         REDIS_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-redis
         MYSQL_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:latest
         MYSQL_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-mysql
+        MYSQL_IMAGE_TAG_VERSION: docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:${VERSION}
+        MYSQL_IMAGE_NAME_VERSION: ${CNB_REPO_NAME}/polaris-mysql
+        MEDIA_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:latest
+        MEDIA_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-media
       stages:
         - name: await the amd64
           type: cnb:await
@@ -57,6 +62,7 @@ main:
             platforms:
               - linux/amd64
               - linux/arm64
+              
         - name: manifest-mysql
           image: cnbcool/manifest
           settings:
@@ -64,7 +70,25 @@ main:
             template: ${MYSQL_IMAGE_TAG}-OS-ARCH
             platforms:
               - linux/amd64
-            
+              - linux/arm64
+              
+        - name: manifest-mysql-version
+          image: cnbcool/manifest
+          settings:
+            target: ${MYSQL_IMAGE_TAG_VERSION}
+            template: ${MYSQL_IMAGE_TAG_VERSION}-OS-ARCH
+            platforms:
+              - linux/amd64
+              - linux/arm64
+        # - name: manifest-media
+        #   image: cnbcool/manifest
+        #   settings:
+        #     target: ${MEDIA_IMAGE_TAG}
+        #     template: ${MEDIA_IMAGE_TAG}-OS-ARCH
+        #     platforms:
+        #       - linux/amd64
+        #       - linux/arm64
+              
         - name: remove tag redis
           type: artifact:remove-tag
           options:
@@ -81,3 +105,11 @@ main:
             tags:
               - latest-linux-amd64
               - latest-linux-arm64
+
+        # - name: remove tag media
+        #   type: artifact:remove-tag
+        #   options:
+        #     name: ${MEDIA_IMAGE_NAME}
+        #     tags:
+        #       - latest-linux-amd64
+        #       - latest-linux-arm64
