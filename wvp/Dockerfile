@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS build
+FROM ubuntu:22.04 AS build
 
 ARG JDK_NAME
 

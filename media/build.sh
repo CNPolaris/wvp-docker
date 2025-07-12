@@ -1,16 +1,22 @@
 #/bin/bash
 set -e
 
-version=2.7.4
-if [ "$(uname -m)" == "x86_64" ]; then
-  arch=amd64
-elif [ "$(uname -m)" == "aarch64" ]; then
-  arch=arm64
-else
-  arch=amd64
-fi
+while getopts c:t:p:m:v:  opt
+do
+	case $opt in
+		v)
+			version=$OPTARG
+			;;
+		p)
+			platform=$OPTARG
+			;;
+		?)
+			echo "unkonwn"
+			exit
+			;;
+       esac
+done
 
-docker build -t polaris-media:${version} .
+docker buildx build --platform=$platform --build-arg MODEL=Release -t polaris-media:${version} .
 docker tag polaris-media:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:${version}
-docker tag polaris-media:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:${arch}
 docker tag polaris-media:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:latest
