@@ -23,7 +23,7 @@ RUN apt-get update && \
          git \
          ca-certificates \
          tzdata \
-         ffmpeg \
+         ffmpeg && \
          apt-get autoremove -y && \
          apt-get clean -y && \
          rm -rf /var/lib/apt/lists/*
