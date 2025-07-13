@@ -1,5 +1,8 @@
 FROM ubuntu:20.04 AS build
 ARG MODEL
+
+ARG TARGETPLATFORM
+
 #shell,rtmp,rtsp,rtsps,http,rtp
 EXPOSE 10935/tcp
 EXPOSE 5540/tcp
@@ -10,7 +13,10 @@ EXPOSE 8000/udp
 EXPOSE 8000/tcp
 EXPOSE 9000/udp
 
+
+RUN sed -Ei "s@(security|ports|archive).ubuntu.com@mirrors.cloud.tencent.com@g" /etc/apt/sources.list
 # ADD sources.list /etc/apt/sources.list
+
 
 RUN apt-get update && \
          DEBIAN_FRONTEND="noninteractive" \
@@ -26,8 +32,6 @@ RUN apt-get update && \
          libssl-dev \
          gcc \
          g++ \
-         net-tools \
-         iproute2 iputils-ping traceroute \
          gdb && \
          apt-get autoremove -y && \
          apt-get clean -y && \
@@ -66,7 +70,9 @@ COPY config.ini /opt/media/ZLMediaKit/release/linux/${MODEL}/
 
 FROM ubuntu:20.04
 ARG MODEL
+ARG TARGETPLATFORM
 
+RUN sed -Ei "s@(security|ports|archive).ubuntu.com@mirrors.cloud.tencent.com@g" /etc/apt/sources.list
 RUN apt-get update && \
          DEBIAN_FRONTEND="noninteractive" \
          apt-get install -y --no-install-recommends \
