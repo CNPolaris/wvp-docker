@@ -11,6 +11,5 @@ else
 fi
 
 docker build -t polaris-wvp:${version} .
-docker tag polaris-wvp:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-wvp:${version}
-docker tag polaris-wvp:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-wvp:${arch}
-docker tag polaris-wvp:${version} polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-wvp:latest
+docker tag polaris-wvp:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:${version}-linux-${arch}
+docker tag polaris-wvp:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:latest-linux-${arch}
