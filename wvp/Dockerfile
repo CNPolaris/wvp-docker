@@ -1,5 +1,7 @@
 FROM ubuntu:20.04 AS build
 
+ARG JDK_NAME
+
 EXPOSE 18978/tcp
 EXPOSE 8116/tcp
 EXPOSE 8116/udp
@@ -13,10 +15,20 @@ RUN apt-get update && \
          DEBIAN_FRONTEND="noninteractive" \
          apt-get install -y --no-install-recommends \
          wget \
+         cmake \
          maven \
          git \
          ca-certificates \
+         tzdata \
+         curl \
+         libpcre3 \
+         libpcre3-dev \
+         zlib1g-dev \
+         openssl \
+         libssl-dev \
+         net-tools \
          ffmpeg \
+         iproute2 iputils-ping traceroute \
          gdb && \
          apt-get autoremove -y && \
          apt-get clean -y && \
@@ -29,12 +41,12 @@ WORKDIR /opt/download
 RUN RUN Platfrom=$(uname -m); \
     if [ "$Platfrom" = "x86_64" ]; \
         then \
-            wget https://polaris-tian-generic.pkg.coding.net/qt/autopliot/jdk-8u411-linux-aarch64.tar.gz?version=latest --no-check-certificate -O jdk-8.tar.gz && \
-            tar -zxvf /opt/download/jdk-8.tar.gz -C /usr/local/ --transform 's/jdk1.8.0_411/java/' && \
-            rm /opt/download/jdk-8.tar.gz; \
-        else \
             wget https://polaris-tian-generic.pkg.coding.net/qt/autopliot/jdk-8u202-linux-x64.tar.gz?version=latest --no-check-certificate -O jdk-8.tar.gz && \
             tar -zxvf /opt/download/jdk-8.tar.gz -C /usr/local/ --transform 's/jdk1.8.0_202/java/' && \
+            rm /opt/download/jdk-8.tar.gz; \
+        else \
+            wget https://polaris-tian-generic.pkg.coding.net/qt/autopliot/jdk-8u411-linux-aarch64.tar.gz?version=latest --no-check-certificate -O jdk-8.tar.gz && \
+            tar -zxvf /opt/download/jdk-8.tar.gz -C /usr/local/ --transform 's/jdk1.8.0_411/java/' && \
             rm /opt/download/jdk-8.tar.gz; \
     fi
 
