@@ -1,7 +1,5 @@
 FROM ubuntu:20.04 AS build
 
-ARG JDK_NAME
-
 EXPOSE 18978/tcp
 EXPOSE 8116/tcp
 EXPOSE 8116/udp
@@ -15,20 +13,10 @@ RUN apt-get update && \
          DEBIAN_FRONTEND="noninteractive" \
          apt-get install -y --no-install-recommends \
          wget \
-         cmake \
          maven \
          git \
          ca-certificates \
-         tzdata \
-         curl \
-         libpcre3 \
-         libpcre3-dev \
-         zlib1g-dev \
-         openssl \
-         libssl-dev \
-         net-tools \
          ffmpeg \
-         iproute2 iputils-ping traceroute \
          gdb && \
          apt-get autoremove -y && \
          apt-get clean -y && \
