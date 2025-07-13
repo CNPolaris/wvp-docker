@@ -63,7 +63,7 @@ RUN mkdir -p build release/linux/${MODEL}/
 WORKDIR /opt/media/ZLMediaKit/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=${MODEL} -DENABLE_WEBRTC=true  -DOPENSSL_ROOT_DIR=/usr/local/openssl  -DOPENSSL_LIBRARIES=/usr/local/openssl/lib -DENABLE_FFMPEG=true -DENABLE_TESTS=false && \
     make -j $(nproc)
-COPY config.ini /opt/media/ZLMediaKit/release/linux/Debug/
+COPY config.ini /opt/media/ZLMediaKit/release/linux/${MODEL}/
 
 FROM ubuntu:20.04
 ARG MODEL

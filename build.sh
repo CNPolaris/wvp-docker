@@ -11,12 +11,13 @@ else
   git clone https://github.com/648540858/wvp-GB28181-pro.git
 fi
 
-# cd $workspace/wvp-GB28181-pro/web && \
-#     npm install && \
-#     npm run build:prod
+cd $workspace/wvp-GB28181-pro/web && \
+    npm config set registry https://mirrors.cloud.tencent.com/npm/ && \
+    npm install && \
+    npm run build:prod
     
-# mkdir -p $workspace/nginx/dist
-# cp -r $workspace/wvp-GB28181-pro/src/main/resources/static/* $workspace/nginx/dist
+mkdir -p $workspace/nginx/dist
+cp -r $workspace/wvp-GB28181-pro/src/main/resources/static/* $workspace/nginx/dist
 
 echo "复制初始化数据库"
 mkdir -p $workspace/mysql/sql
@@ -34,10 +35,10 @@ echo "构建Redis容器"
 cd $workspace/redis/
 chmod +x ./build.sh && ./build.sh
 
-# echo "构建WVP容器"
-# cd $workspace/wvp/
-# chmod +x ./build.sh && ./build.sh
+echo "构建WVP容器"
+cd $workspace/wvp/
+chmod +x ./build.sh && ./build.sh
 
-# echo "构建Nginx容器"
-# cd $workspace/nginx/
-# chmod +x ./build.sh && ./build.sh
+echo "构建Nginx容器"
+cd $workspace/nginx/
+chmod +x ./build.sh && ./build.sh
