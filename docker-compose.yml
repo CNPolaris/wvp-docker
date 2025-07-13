@@ -1,7 +1,7 @@
 version: '3'
 services:
   polaris-redis:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-redis:latest
+    image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest
     network_mode: "host"
     restart: unless-stopped
     healthcheck:
@@ -20,7 +20,7 @@ services:
     command: redis-server /opt/polaris/redis/redis.conf --appendonly yes
 
   polaris-mysql:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-mysql:2.7.3
+    image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:2.7.3
     network_mode: "host"
     restart: unless-stopped
     healthcheck:
@@ -52,7 +52,7 @@ services:
         ]
 
   polaris-media:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-media:2.7.3
+    image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:2.7.3
     network_mode: "host"
     restart: always
     ports:
@@ -71,7 +71,7 @@ services:
       - ./media/config.ini:/opt/media/conf/config.ini
 
   polaris-wvp:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-wvp:2.7.3
+    image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:2.7.3
     network_mode: "host"
     restart: always
     ports:
@@ -112,7 +112,7 @@ services:
       NGINX_HOST: http://10.10.1.124:8080
 
   polaris-nginx:
-    image: polaris-tian-docker.pkg.coding.net/qt/polaris/polaris-nginx:2.7.3
+    image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:2.7.3
     network_mode: "host"
     ports:
       - "8080:8080"
@@ -124,4 +124,4 @@ services:
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./logs/nginx:/var/log/nginx
-      - ./nginx/config.js:/opt//dist/static/js/config.js
+      - ./nginx/config.js:/opt/dist/static/js/config.js
