@@ -1,6 +1,7 @@
 FROM ubuntu:20.04 AS build
+ENV DEBIAN_FRONTEND=noninteractive
 
-ARG JDK_NAME
+ARG TARGETPLATFORM
 
 EXPOSE 18978/tcp
 EXPOSE 8116/tcp
@@ -11,25 +12,18 @@ EXPOSE 18081
 EXPOSE 30000-30500
 EXPOSE 50502-50506 
 
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 RUN apt-get update && \
          DEBIAN_FRONTEND="noninteractive" \
          apt-get install -y --no-install-recommends \
          wget \
-         cmake \
          maven \
          git \
          ca-certificates \
          tzdata \
-         curl \
-         libpcre3 \
-         libpcre3-dev \
-         zlib1g-dev \
-         openssl \
-         libssl-dev \
-         net-tools \
          ffmpeg \
-         iproute2 iputils-ping traceroute \
-         gdb && \
          apt-get autoremove -y && \
          apt-get clean -y && \
          rm -rf /var/lib/apt/lists/*
@@ -38,17 +32,21 @@ RUN apt-get update && \
 RUN mkdir -p /opt/download
 WORKDIR /opt/download
 
-RUN RUN Platfrom=$(uname -m); \
-    if [ "$Platfrom" = "x86_64" ]; \
-        then \
+RUN case "$TARGETPLATFORM" in \
+        "linux/amd64")  \
             wget https://polaris-tian-generic.pkg.coding.net/qt/autopliot/jdk-8u202-linux-x64.tar.gz?version=latest --no-check-certificate -O jdk-8.tar.gz && \
             tar -zxvf /opt/download/jdk-8.tar.gz -C /usr/local/ --transform 's/jdk1.8.0_202/java/' && \
             rm /opt/download/jdk-8.tar.gz; \
-        else \
+            ;; \
+        "linux/arm64")  \
             wget https://polaris-tian-generic.pkg.coding.net/qt/autopliot/jdk-8u411-linux-aarch64.tar.gz?version=latest --no-check-certificate -O jdk-8.tar.gz && \
             tar -zxvf /opt/download/jdk-8.tar.gz -C /usr/local/ --transform 's/jdk1.8.0_411/java/' && \
             rm /opt/download/jdk-8.tar.gz; \
-    fi
+            ;; \
+        *)  \
+            echo "Unsupported platform: $TARGETPLATFORM" && exit 1 ; \
+            ;; \
+    esac
 
 ENV JAVA_HOME /usr/local/java/
 ENV JRE_HOME ${JAVA_HOME}/jre
@@ -82,6 +80,11 @@ RUN cd /home/wvp-pro-assist && \
     cp /home/wvp-pro-assist/target/*.jar /opt/assist/assist.jar
 RUN chmod +rx /opt/assist/assist.jar
 RUN rm -rf /home/wvp-pro-assist
+
+RUN rm -rf /root/.m2/repository && \
+    apt-get remove -y maven && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN chmod +rx /opt/assist/run.sh
 RUN /opt/assist/run.sh start
