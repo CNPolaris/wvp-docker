@@ -68,7 +68,7 @@ services:
       - ./volumes/video:/opt/media/www/record/
       - ./volumes/media/assist:/opt/media/assist/
       - ./logs/media:/opt/media/log/
-      - ./media/config.ini:/opt/media/ZLMediaKit/release/linux/Release/config.ini
+      - ./media/config.ini:/opt/media/conf/config.ini
 
   polaris-wvp:
     image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:latest

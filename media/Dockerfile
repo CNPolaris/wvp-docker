@@ -1,4 +1,7 @@
-FROM ubuntu:20.04 AS build
+FROM ubuntu:22.04 AS build
+
+ENV DEBIAN_FRONTEND=noninteractive
+
 ARG MODEL
 #shell,rtmp,rtsp,rtsps,http,rtp
 EXPOSE 10935/tcp
@@ -10,9 +13,8 @@ EXPOSE 8000/udp
 EXPOSE 8000/tcp
 EXPOSE 9000/udp
 
-
 # ADD sources.list /etc/apt/sources.list
-
+RUN sed -Ei "s@(security|ports|archive).ubuntu.com@mirrors.cloud.tencent.com@g" /etc/apt/sources.list
 RUN apt-get update && \
          DEBIAN_FRONTEND="noninteractive" \
          apt-get install -y --no-install-recommends \
@@ -20,15 +22,11 @@ RUN apt-get update && \
          cmake \
          git \
          curl \
-         vim \
          wget \
          ca-certificates \
          tzdata \
-         libssl-dev \
          gcc \
          g++ \
-         net-tools \
-         iproute2 iputils-ping traceroute \
          gdb && \
          apt-get autoremove -y && \
          apt-get clean -y && \
@@ -52,22 +50,17 @@ RUN wget https://polaris-tian-generic.pkg.coding.net/qt/dependencies/openssl-1.1
     ldconfig && \
     ln -s /usr/local/openssl/bin/openssl  /usr/local/bin/openssl
 
-WORKDIR /opt/media/ZLMediaKit/3rdpart
-RUN wget https://github.com/cisco/libsrtp/archive/v2.3.0.tar.gz -O libsrtp-2.3.0.tar.gz && \
-    tar xfv libsrtp-2.3.0.tar.gz && \
-    mv libsrtp-2.3.0 libsrtp && \
-    cd libsrtp && ./configure --enable-openssl --with-openssl-dir=/usr/local/openssl && make -j $(nproc) && make install
-
 RUN mkdir -p build release/linux/${MODEL}/
 
 WORKDIR /opt/media/ZLMediaKit/build
-RUN cmake .. -DCMAKE_BUILD_TYPE=${MODEL} -DENABLE_WEBRTC=true  -DOPENSSL_ROOT_DIR=/usr/local/openssl  -DOPENSSL_LIBRARIES=/usr/local/openssl/lib -DENABLE_FFMPEG=true -DENABLE_TESTS=false && \
+RUN cmake -DCMAKE_BUILD_TYPE=${MODEL} -DENABLE_WEBRTC=true -DENABLE_FFMPEG=true -DENABLE_TESTS=false -DENABLE_API=false .. && \
     make -j $(nproc)
 COPY config.ini /opt/media/ZLMediaKit/release/linux/${MODEL}/
 
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 ARG MODEL
 
+RUN sed -Ei "s@(security|ports|archive).ubuntu.com@mirrors.cloud.tencent.com@g" /etc/apt/sources.list
 RUN apt-get update && \
          DEBIAN_FRONTEND="noninteractive" \
          apt-get install -y --no-install-recommends \
@@ -80,7 +73,6 @@ RUN apt-get update && \
          ffmpeg \
          gcc \
          g++ \
-         net-tools \
          gdb && \
          apt-get autoremove -y && \
          apt-get clean -y && \
