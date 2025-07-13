@@ -124,4 +124,4 @@ services:
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./logs/nginx:/var/log/nginx
-      - ./nginx/config.js:/opt//dist/static/js/config.js
+      - ./nginx/config.js:/opt/dist/static/js/config.js
