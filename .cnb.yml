@@ -71,73 +71,73 @@
           options:
             key: build-arm64
 
-        - name: manifest-redis
-          image: cnbcool/manifest
-          settings:
-            target: ${REDIS_IMAGE_TAG}
-            template: ${REDIS_IMAGE_TAG}-OS-ARCH
-            platforms:
-              - linux/amd64
-              - linux/arm64
-        - name: remove tag redis
-          type: artifact:remove-tag
-          options:
-            name: ${REDIS_IMAGE_NAME}
-            tags:
-              - latest-linux-amd64
-              - latest-linux-arm64
-            type: docker
+        # - name: manifest-redis
+        #   image: cnbcool/manifest
+        #   settings:
+        #     target: ${REDIS_IMAGE_TAG}
+        #     template: ${REDIS_IMAGE_TAG}-OS-ARCH
+        #     platforms:
+        #       - linux/amd64
+        #       - linux/arm64
+        # - name: remove tag redis
+        #   type: artifact:remove-tag
+        #   options:
+        #     name: ${REDIS_IMAGE_NAME}
+        #     tags:
+        #       - latest-linux-amd64
+        #       - latest-linux-arm64
+        #     type: docker
               
-        - name: manifest-mysql
-          image: cnbcool/manifest
-          settings:
-            target: ${MYSQL_IMAGE_TAG}
-            template: ${MYSQL_IMAGE_TAG}-OS-ARCH
-            platforms:
-              - linux/amd64
-              - linux/arm64
+        # - name: manifest-mysql
+        #   image: cnbcool/manifest
+        #   settings:
+        #     target: ${MYSQL_IMAGE_TAG}
+        #     template: ${MYSQL_IMAGE_TAG}-OS-ARCH
+        #     platforms:
+        #       - linux/amd64
+        #       - linux/arm64
 
-        - name: remove tag mysql
-          type: artifact:remove-tag
-          options:
-            name: ${MYSQL_IMAGE_NAME}
-            tags:
-              - ${VERSION}-linux-amd64
-              - ${VERSION}-linux-arm64
+        # - name: remove tag mysql
+        #   type: artifact:remove-tag
+        #   options:
+        #     name: ${MYSQL_IMAGE_NAME}
+        #     tags:
+        #       - ${VERSION}-linux-amd64
+        #       - ${VERSION}-linux-arm64
 
-        - name: manifest-media
-          image: cnbcool/manifest
-          settings:
-            target: ${MEDIA_IMAGE_TAG}
-            template: ${MEDIA_IMAGE_TAG}-OS-ARCH
-            platforms:
-              - linux/amd64
-              - linux/arm64
+        # - name: manifest-media
+        #   image: cnbcool/manifest
+        #   settings:
+        #     target: ${MEDIA_IMAGE_TAG}
+        #     template: ${MEDIA_IMAGE_TAG}-OS-ARCH
+        #     platforms:
+        #       - linux/amd64
+        #       - linux/arm64
               
-        - name: remove tag media
-          type: artifact:remove-tag
-          options:
-            name: ${MEDIA_IMAGE_NAME}
-            tags:
-              - ${VERSION}-linux-amd64
-              - ${VERSION}-linux-arm64
+        # - name: remove tag media
+        #   type: artifact:remove-tag
+        #   options:
+        #     name: ${MEDIA_IMAGE_NAME}
+        #     tags:
+        #       - ${VERSION}-linux-amd64
+        #       - ${VERSION}-linux-arm64
 
-        - name: manifest-nginx
-          image: cnbcool/manifest
-          settings:
-            target: ${NGINX_IMAGE_TAG}
-            template: ${NGINX_IMAGE_TAG}-OS-ARCH
-            platforms:
-              - linux/amd64
-              - linux/arm64
+        # - name: manifest-nginx
+        #   image: cnbcool/manifest
+        #   settings:
+        #     target: ${NGINX_IMAGE_TAG}
+        #     template: ${NGINX_IMAGE_TAG}-OS-ARCH
+        #     platforms:
+        #       - linux/amd64
+        #       - linux/arm64
               
-        - name: remove tag nginx
-          type: artifact:remove-tag
-          options:
-            name: ${NGINX_IMAGE_NAME}
-            tags:
-              - ${VERSION}-linux-amd64
-              - ${VERSION}-linux-arm64
+        # - name: remove tag nginx
+        #   type: artifact:remove-tag
+        #   options:
+        #     name: ${NGINX_IMAGE_NAME}
+        #     tags:
+        #       - ${VERSION}-linux-amd64
+        #       - ${VERSION}-linux-arm64
 
         - name: manifest-wvp
           image: cnbcool/manifest
