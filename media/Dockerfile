@@ -14,7 +14,8 @@ EXPOSE 9000/udp
 
 # ADD sources.list /etc/apt/sources.list
 
-RUN apt-get update && \
+RUN sed -Ei "s@(security|ports|archive).ubuntu.com@mirrors.cloud.tencent.com@g" /etc/apt/sources.list && \
+    apt-get update && \
          DEBIAN_FRONTEND="noninteractive" \
          apt-get install -y --no-install-recommends \
          build-essential \
