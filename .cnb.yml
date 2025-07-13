@@ -5,9 +5,16 @@ main:
         tags: cnb:arch:amd64
       services:
         - docker
+      docker:
+        image: cnbcool/node-plugin-env:latest
+        volumes:
+          - node_modules
       stages:
         - name: docker login
           script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
+        - name: set npm registry
+          script: 
+            - npm config set registry http://mirrors.cloud.tencent.com/npm/
         - name: docker build
           script: ./build.sh
         - name: docker push
@@ -21,9 +28,16 @@ main:
         tags: cnb:arch:arm64:v8
       services:
         - docker
+      docker:
+        image: cnbcool/node-plugin-env:latest
+        volumes:
+          - node_modules
       stages:
         - name: docker login
           script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
+        - name: set npm registry
+          script: 
+            - npm config set registry http://mirrors.cloud.tencent.com/npm/
         - name: docker build
           script: ./build.sh
         - name: docker push
