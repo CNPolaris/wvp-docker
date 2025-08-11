@@ -60,7 +60,7 @@ main:
     - services:
         - docker
       env:
-        VERSION: 2.7.4
+        VERSION: latest
         REDIS_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-redis
         REDIS_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest
         MYSQL_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-mysql
