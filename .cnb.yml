@@ -1,4 +1,14 @@
-
+# .cnb.yml
+$:
+  # vscode 事件：专供页面中启动远程开发用
+  vscode:
+    - docker:
+         dockerfile: .ide/Dockerfile
+      runner:
+          cpus: 8
+      services:
+        - vscode
+        - docker
 main:
   push:
     - runner:
