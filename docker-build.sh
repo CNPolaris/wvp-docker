@@ -60,4 +60,4 @@ cd $workspace/redis/
 chmod +x ./build.sh && ./build.sh
 
 echo "[10/10]推送镜像"
-chmod +x ./push.sh && ./push.sh
+# chmod +x ./push.sh && ./push.sh
