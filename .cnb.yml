@@ -3,8 +3,8 @@ $:
   # vscode 事件：专供页面中启动远程开发用
   vscode:
     - docker:
-        build: .ide/Dockerfile
-        image: cnbcool/default-dev-env:latest
+        # build: .ide/Dockerfile
+        image: docker.cnb.cool/polaris-tian/wvp-docker:latest
       runner:
         cpus: 8
       services:
