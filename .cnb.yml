@@ -35,23 +35,8 @@ main:
       services:
         - docker
       docker:
-        image: ubuntu:22.04
+        image: docker.cnb.cool/polaris-tian/wvp-docker/ubuntu-wvp:aarch64
       stages:
-        - name: install dependencies
-          script: |
-            sed -Ei "s@(security|ports|archive).ubuntu.com@mirrors.cloud.tencent.com@g" /etc/apt/sources.list
-            apt-get update && apt-get install -y git openjdk-17-jdk wget maven locales curl \
-              && ocale-gen zh_CN.UTF-8 \
-              && export LANG=zh_CN.UTF-8 \
-              && export LANGUAGE=zh_CN:zh \
-              && export LC_ALL=zh_CN.UTF-8
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash \
-              && . /root/.nvm/nvm.sh \
-              && nvm install 20 \
-              && nvm alias default 20 \
-              && ln -s $(which node) /usr/local/bin/node \
-              && ln -s $(which npm) /usr/local/bin/npm
-            npm config set registry http://mirrors.cloud.tencent.com/npm/
         - name: docker login
           script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
         - name: docker build
