@@ -3,9 +3,10 @@ $:
   # vscode 事件：专供页面中启动远程开发用
   vscode:
     - docker:
-         dockerfile: .ide/Dockerfile
+        dockerfile: .ide/Dockerfile
       runner:
-          cpus: 8
+        # tags: cnb:arch:arm64:v8
+        cpus: 8
       services:
         - vscode
         - docker
@@ -19,15 +20,16 @@ main:
         image: ubuntu:22.04
       stages:
         - name: install dependencies
-          script: 
-            - apt-get update && apt-get install -y git openjdk-17-jdk wget maven locales curl
-            - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash \
+          script: |
+            sed -Ei "s@(security|ports|archive).ubuntu.com@mirrors.cloud.tencent.com@g" /etc/apt/sources.list
+            apt-get update && apt-get install -y git openjdk-17-jdk wget maven locales curl
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash \
               && . /root/.nvm/nvm.sh \
               && nvm install 20 \
               && nvm alias default 20 \
               && ln -s $(which node) /usr/local/bin/node \
               && ln -s $(which npm) /usr/local/bin/npm
-            - npm config set registry http://mirrors.cloud.tencent.com/npm/
+            npm config set registry http://mirrors.cloud.tencent.com/npm/
         - name: docker login
           script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
         - name: docker build
@@ -47,15 +49,16 @@ main:
         image: ubuntu:22.04
       stages:
         - name: install dependencies
-          script: 
-            - apt-get update && apt-get install -y git openjdk-17-jdk wget maven locales curl
-            - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash \
+          script: |
+            sed -Ei "s@(security|ports|archive).ubuntu.com@mirrors.cloud.tencent.com@g" /etc/apt/sources.list
+            apt-get update && apt-get install -y git openjdk-17-jdk wget maven locales curl
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash \
               && . /root/.nvm/nvm.sh \
               && nvm install 20 \
               && nvm alias default 20 \
               && ln -s $(which node) /usr/local/bin/node \
               && ln -s $(which npm) /usr/local/bin/npm
-            - npm config set registry http://mirrors.cloud.tencent.com/npm/
+            npm config set registry http://mirrors.cloud.tencent.com/npm/
         - name: docker login
           script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
         - name: docker build
