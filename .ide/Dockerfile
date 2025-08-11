@@ -21,7 +21,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
     && nvm alias default 20 \
     && ln -s $(which node) /usr/local/bin/node \
     && ln -s $(which npm) /usr/local/bin/npm
-
+RUN npm config set registry http://mirrors.cloud.tencent.com/npm/
 # 指定字符集支持命令行输入中文（根据需要选择字符集）
 ENV LANG zh_CN.UTF-8
 ENV LANGUAGE zh_CN:zh
