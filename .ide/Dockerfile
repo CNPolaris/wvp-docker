@@ -13,7 +13,13 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh \
   && code-server --install-extension mhutchie.git-graph \
   && code-server --install-extension donjayamanne.githistory
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash 
+ENV NVM_DIR /root/.nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash \
+    && . $NVM_DIR/nvm.sh \
+    && nvm install 20 \
+    && nvm alias default 20 \
+    && ln -s $(which node) /usr/local/bin/node \
+    && ln -s $(which npm) /usr/local/bin/npm
 
 # 指定字符集支持命令行输入中文（根据需要选择字符集）
 ENV LANG zh_CN.UTF-8
