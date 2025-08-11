@@ -26,7 +26,7 @@ main:
           script: 
             - npm config set registry http://mirrors.cloud.tencent.com/npm/
         - name: docker build
-          script: ./build.sh
+          script: ./docker-build.sh
         - name: docker push
           script: ./push.sh
         - name: resolve
@@ -49,7 +49,7 @@ main:
           script: 
             - npm config set registry http://mirrors.cloud.tencent.com/npm/
         - name: docker build
-          script: ./build.sh
+          script: ./docker-build.sh
         - name: docker push
           script: ./push.sh
         - name: resolve
