@@ -35,7 +35,7 @@ RUN apt-get update && \
 RUN mkdir -p /opt/media
 RUN mkdir -p /opt/media/assist
 WORKDIR /opt/media
-RUN git clone --depth 1 https://gitee.com/xia-chu/ZLMediaKit && \
+RUN git clone --depth 1 https://github.com/ZLMediaKit/ZLMediaKit.git && \
     cd ZLMediaKit && git submodule update --init
 WORKDIR /opt/media/ZLMediaKit
 

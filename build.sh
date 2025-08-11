@@ -1,7 +1,7 @@
 #/bin/bash
 set -e
 
-version=2.7.4
+version=latest
 workspace=$(pwd)
 
 # echo "物理机编译前端"
@@ -24,16 +24,16 @@ mkdir -p $workspace/mysql/sql
 cp -r $workspace/wvp-GB28181-pro/数据库/${version}/* $workspace/mysql/sql/
 
 echo "构建ZLM容器"
-cd $workspace/media/
-chmod +x ./build.sh && ./build.sh
+# cd $workspace/media/
+# chmod +x ./build.sh && ./build.sh
 
 # echo "构建数据库容器"
 cd $workspace/mysql/
 chmod +x ./build.sh && ./build.sh
 
-echo "构建Redis容器"
-cd $workspace/redis/
-chmod +x ./build.sh && ./build.sh
+# echo "构建Redis容器"
+# cd $workspace/redis/
+# chmod +x ./build.sh && ./build.sh
 
 echo "构建WVP容器"
 cd $workspace/wvp/
