@@ -12,69 +12,69 @@ $:
         - docker
 main:
   push:
-    # - runner:
-    #     tags: cnb:arch:amd64
-    #   services:
-    #     - docker
-    #   docker:
-    #     image: docker.cnb.cool/polaris-tian/wvp-docker/ubuntu-wvp:amd64
-    #   stages:
-    #     - name: docker login
-    #       script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
-    #     - name: docker build
-    #       script: ./docker-build.sh
-    #     - name: docker push
-    #       script: ./push.sh
-    #     - name: resolve
-    #       type: cnb:resolve
-    #       options:
-    #         key: build-amd64 
+    - runner:
+        tags: cnb:arch:amd64
+      services:
+        - docker
+      docker:
+        image: docker.cnb.cool/polaris-tian/wvp-docker/ubuntu-wvp:amd64
+      stages:
+        - name: docker login
+          script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
+        - name: docker build
+          script: ./docker-build.sh
+        - name: docker push
+          script: ./push.sh
+        - name: resolve
+          type: cnb:resolve
+          options:
+            key: build-amd64 
           
-    # - runner:
-    #     tags: cnb:arch:arm64:v8
-    #   services:
-    #     - docker
-    #   docker:
-    #     image: docker.cnb.cool/polaris-tian/wvp-docker/ubuntu-wvp:aarch64
-    #   stages:
-    #     - name: docker login
-    #       script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
-    #     - name: docker build
-    #       script: ./docker-build.sh
-    #     - name: docker push
-    #       script: ./push.sh
-    #     - name: resolve
-    #       type: cnb:resolve
-    #       options:
-    #         key: build-arm64
+    - runner:
+        tags: cnb:arch:arm64:v8
+      services:
+        - docker
+      docker:
+        image: docker.cnb.cool/polaris-tian/wvp-docker/ubuntu-wvp:aarch64
+      stages:
+        - name: docker login
+          script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
+        - name: docker build
+          script: ./docker-build.sh
+        - name: docker push
+          script: ./push.sh
+        - name: resolve
+          type: cnb:resolve
+          options:
+            key: build-arm64
 
     - services:
         - docker
       env:
         VERSION: latest
         REDIS_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-redis
-        REDIS_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest
+        REDIS_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:${VERSION}
         MYSQL_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-mysql
-        MYSQL_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:latest
+        MYSQL_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:${VERSION}
         MYSQL_IMAGE_TAG_VERSION: docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:${VERSION}
         MEDIA_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-media
-        MEDIA_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:latest
+        MEDIA_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:${VERSION}
         MEDIA_IMAGE_TAG_VERSION: docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:${VERSION}
         NGINX_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-nginx
-        NGINX_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:latest
+        NGINX_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:${VERSION}
         NGINX_IMAGE_TAG_VERSION: docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:${VERSION}
         WVP_IMAGE_NAME: ${CNB_REPO_NAME}/polaris-wvp
-        WVP_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:latest
+        WVP_IMAGE_TAG: docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:${VERSION}
         WVP_IMAGE_TAG_VERSION: docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:${VERSION}
       stages:
-        # - name: await the amd64
-        #   type: cnb:await
-        #   options:
-        #     key: build-amd64
-        # - name: await the arm64
-        #   type: cnb:await
-        #   options:
-        #     key: build-arm64
+        - name: await the amd64
+          type: cnb:await
+          options:
+            key: build-amd64
+        - name: await the arm64
+          type: cnb:await
+          options:
+            key: build-arm64
         - name: manifest-redis
           image: cnbcool/manifest
           settings:
@@ -102,22 +102,11 @@ main:
               - linux/amd64
               - linux/arm64
 
-        - name: manifest-mysql-version
-          image: cnbcool/manifest
-          settings:
-            target: ${MYSQL_IMAGE_TAG_VERSION}
-            template: ${MYSQL_IMAGE_TAG_VERSION}-OS-ARCH
-            platforms:
-              - linux/amd64
-              - linux/arm64
-
         - name: remove tag mysql
           type: artifact:remove-tag
           options:
             name: ${MYSQL_IMAGE_NAME}
             tags:
-              - latest-linux-amd64
-              - latest-linux-arm64
               - ${VERSION}-linux-amd64
               - ${VERSION}-linux-arm64
 
@@ -129,23 +118,12 @@ main:
             platforms:
               - linux/amd64
               - linux/arm64
-              
-        - name: manifest-media-version
-          image: cnbcool/manifest
-          settings:
-            target: ${MEDIA_IMAGE_TAG_VERSION}
-            template: ${MEDIA_IMAGE_TAG_VERSION}-OS-ARCH
-            platforms:
-              - linux/amd64
-              - linux/arm64
 
         - name: remove tag media
           type: artifact:remove-tag
           options:
             name: ${MEDIA_IMAGE_NAME}
             tags:
-              - latest-linux-amd64
-              - latest-linux-arm64
               - ${VERSION}-linux-amd64
               - ${VERSION}-linux-arm64
 
@@ -163,8 +141,6 @@ main:
           options:
             name: ${NGINX_IMAGE_NAME}
             tags:
-              - latest-linux-amd64
-              - latest-linux-arm64
               - ${VERSION}-linux-amd64
               - ${VERSION}-linux-arm64
 
@@ -182,7 +158,5 @@ main:
           options:
             name: ${WVP_IMAGE_NAME}
             tags:
-              - latest-linux-amd64
-              - latest-linux-arm64
               - ${VERSION}-linux-amd64
               - ${VERSION}-linux-arm64
