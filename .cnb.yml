@@ -24,9 +24,9 @@ dev:
               auth_type: https
               username: ${GITHUB_USERNAME}
               password: ${GITHUB_PASSWORD}
-              
+
 main:
-  web_trigger_sync:
+  web_trigger_sync1:
     - runner:
         tags: cnb:arch:amd64
         cpus: 2
