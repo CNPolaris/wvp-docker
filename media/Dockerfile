@@ -44,7 +44,7 @@ WORKDIR /opt/media/ZLMediaKit/3rdpart
 RUN wget https://polaris-tian-generic.pkg.coding.net/qt/dependencies/openssl-1.1.1k.tar.gz?version=latest -O openssl-1.1.1k.tar.gz && \
     tar -xvzf openssl-1.1.1k.tar.gz && \
     cd openssl-1.1.1k && ./config shared --openssldir=/usr/local/openssl --prefix=/usr/local/openssl && \
-    make && make install && \
+    make -j $(nproc) && make install && \
     echo "/usr/local/lib64/" >> /etc/ld.so.conf && \
     echo "/usr/local/openssl/lib" >> /etc/ld.so.conf && \
     ldconfig && \
