@@ -10,7 +10,8 @@ $:
       services:
         - vscode
         - docker
-dev: 
+        
+"**": 
   web_trigger_sync:
     - stages:
         - name: sync to github
@@ -23,19 +24,6 @@ dev:
             password: ${GITHUB_PASSWORD}
 
 main:
-  web_trigger_sync1:
-    - runner:
-        tags: cnb:arch:amd64
-        cpus: 2
-        imports: https://cnb.cool/polaris-tian/my-token/-/blob/main/env.yml
-        stages:
-          - name: sync to github
-            image: tencentcom/git-sync
-            settings:
-              target_url: https://github.com/CNPolaris/wvp-docker.git
-              auth_type: https
-              username: ${GITHUB_USERNAME}
-              password: ${GITHUB_PASSWORD}
   push:
     - runner:
         tags: cnb:arch:amd64
