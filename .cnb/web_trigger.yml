@@ -1,0 +1,16 @@
+# .cnb/web_trigger.yml
+branch:
+  # 如下按钮在分支名以 release 开头的分支详情页面显示
+  - reg: "^main"
+    buttons:
+      - name: Sync to git
+        # 如存在，则将作为流水线 title，否则流水线使用默认 title
+        description: 同步仓库到其他备份仓库中
+        event: web_trigger_sync
+        permissions:
+          # roles 和 users 配置其中之一或都配置均可，二者满足其一即可
+          # 角色非向上包含关系。例如如下配置，表示仅 master 或 developer 角色才有权限，owner 即使仓库权限更高，但此处无权限
+          roles:
+            - owner
+
+        
