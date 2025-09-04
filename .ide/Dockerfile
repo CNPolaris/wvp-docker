@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 RUN sed -Ei "s@(security|ports|archive).ubuntu.com@mirrors.cloud.tencent.com@g" /etc/apt/sources.list
 # 以及按需安装其他软件
-RUN apt-get update && apt-get install -y git openjdk-17-jdk wget maven locales curl python3 python3-pip && locale-gen zh_CN.UTF-8
+RUN apt-get update && apt-get install -y git openjdk-17-jdk wget maven locales curl python3 python3-pip wget unzip openssh-server && locale-gen zh_CN.UTF-8
 
 # 安装 code-server 和 vscode 常用插件
 RUN curl -fsSL https://code-server.dev/install.sh | sh \
