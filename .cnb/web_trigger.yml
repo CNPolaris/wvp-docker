@@ -11,11 +11,5 @@ branch:
           # 角色非向上包含关系。例如如下配置，表示仅 master 或 developer 角色才有权限，owner 即使仓库权限更高，但此处无权限
           roles:
             - owner
-      - name: Build latest
-        description: 同步最近代码
-        event: push
-        permissions:
-          roles:
-            - owner
 
         
