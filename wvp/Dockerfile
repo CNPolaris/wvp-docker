@@ -1,6 +1,8 @@
 FROM ubuntu:20.04 AS build
 ENV DEBIAN_FRONTEND=noninteractive
 
+RUN sed -Ei "s@(security|ports|archive).ubuntu.com@mirrors.cloud.tencent.com@g" /etc/apt/sources.list
+
 ARG TARGETPLATFORM
 
 EXPOSE 18978/tcp
