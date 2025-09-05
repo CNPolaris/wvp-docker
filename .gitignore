@@ -45,3 +45,6 @@ nginx/dist/
 volumes/
 
 mysql/sql/
+
+wvp-GB28181-pro/
+wvp-pro-assist/
