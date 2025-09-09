@@ -1,8 +1,7 @@
-version: '3'
+version: '3.3'
 services:
   polaris-redis:
     image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-redis:latest
-    network_mode: "host"
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
@@ -11,17 +10,18 @@ services:
       retries: 10
       start_period: 10s
     ports:
-      - 6379:6379
+      - 6390:6379
     volumes:
-      - ./redis/conf/redis.conf:/opt/polaris/redis/redis.conf
       - ./volumes/redis/data/:/data
     environment:
       TZ: "Asia/Shanghai"
-    command: redis-server /opt/polaris/redis/redis.conf --appendonly yes
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-Data@123456}
+    command: sh -c "redis-server /usr/local/redis.conf --requirepass $${REDIS_PASSWORD}"
+    networks:
+      - wvp-net
 
   polaris-mysql:
     image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-mysql:latest
-    network_mode: "host"
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/3306" ]
@@ -33,10 +33,10 @@ services:
       MYSQL_DATABASE: wvp
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: polaris
-      MYSQL_PASSWORD: polaris
+      MYSQL_PASSWORD: Data@123
       TZ: Asia/Shanghai
     ports:
-      - 3306:3306
+      - 3310:3306
     volumes:
       - ./mysql/conf:/etc/mysql/conf.d
       - ./logs/mysql:/logs
@@ -50,6 +50,8 @@ services:
           '--default-time-zone=+8:00',
           '--lower-case-table-names=1'
         ]
+    networks:
+      - wvp-net
 
   polaris-media:
     image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:latest
@@ -94,22 +96,23 @@ services:
       - ./volumes/wvp/assist:/opt/media/assist/
     environment:
       # 本机的IP(物理机IP)
-      SIP_HOST: 172.26.26.2
-      STREAM_HOST: 172.26.26.2
-      SDP_HOST: 172.26.26.2
-      HOOK_HOST: 172.26.26.2
+      SIP_HOST: 172.18.61.2
+      STREAM_HOST: 172.18.61.2
+      SDP_HOST: 172.18.61.2
+      HOOK_HOST: 172.18.61.2
       ZLM_HOST: 127.0.0.1
       ZLM_PORT: 6080
       ZLM_SERCERT: su6TiedN2rVAmBbIDX0aa0QTiBJLBdcf
       REDIS_HOST: 127.0.0.1
-      REDIS_PORT: 6379
+      REDIS_PORT: 6390
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-Data@123456}
       MYSQL_HOST: 127.0.0.1
-      MYSQL_PORT: 3306
+      MYSQL_PORT: 3310
       MYSQL_DATABASE: wvp
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       # 前端跨域配置，nginx容器所在物理机IP
-      NGINX_HOST: http://172.26.26.2:8080
+      NGINX_HOST: http://172.18.61.2:8080
 
   polaris-nginx:
     image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:latest
@@ -119,9 +122,13 @@ services:
     depends_on:
       - polaris-wvp
     environment:
-      - WVP_HOST=172.26.26.2
+      - WVP_HOST=172.18.61.2
       - WVP_PORT=18978
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./logs/nginx:/var/log/nginx
       - ./nginx/config.js:/opt/dist/static/js/config.js
+
+networks:
+  wvp-net:
+    driver: bridge
