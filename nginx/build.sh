@@ -16,5 +16,6 @@ rm ./dist/static/js/config.js
 cp ./config.js ./dist/static/js/
 
 docker build -t polaris-nginx:${version} .
+docker tag polaris-nginx:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:${version}
 docker tag polaris-nginx:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:${version}-linux-${arch}
 docker tag polaris-nginx:${version} docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:latest-linux-${arch}
