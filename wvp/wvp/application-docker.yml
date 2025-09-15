@@ -43,12 +43,12 @@ sip:
   # [必须修改] 本机的IP
   ip: ${SIP_HOST:127.0.0.1}
   # [可选]
-  port: 8116
+  port: ${SIP_PORT:8116}
   # [可选]
-  domain: 3402000000
+  domain: ${SIP_DOMAIN:3402000000}
   # [可选]
-  id: 34020000002000000001
-  password:
+  id: ${SIP_ID:34020000002000000001}
+  password:  ${SIP_PWD:admin123}
   alarm: true
 
 # 默认服务器配置
@@ -56,19 +56,17 @@ media:
   id: polaris
   # [必须修改] ZLM 内网IP与端口
   ip: ${ZLM_HOST:127.0.0.1}
-  http-port: ${ZLM_PORT:6080}
+  http-port: ${ZLM_PORT:80}
   # [可选] 返回流地址时的ip，置空使用 media.ip
   stream-ip: ${STREAM_HOST:127.0.0.1}
   # [可选] wvp在国标信令中使用的ip，此ip为摄像机可以访问到的ip， 置空使用 media.ip
   sdp-ip: ${SDP_HOST:127.0.0.1}
-  # [可选] Hook IP, 默认使用sip.ip
-  hook-ip: ${HOOK_HOST:127.0.0.1}
   # [可选] sslport
-  http-ssl-port: 4443
-  rtp-proxy-port: 10000
-  rtmp-port: 10935
+  http-ssl-port: ${ZLM_SSL_PORT:443}
+  rtp-proxy-port: ${MediaRtp:10000}
+  rtmp-port: ${MediaRtmp:1935}
   rtmp-ssl-port: 41935
-  rtsp-port: 5540
+  rtsp-port: ${MediaRtsp:554}
   rtsp-ssl-port: 45540
   # [可选] 
   secret: ${ZLM_SERCERT}

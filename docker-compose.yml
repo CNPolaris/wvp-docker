@@ -59,17 +59,23 @@ services:
       - wvp-net
     restart: always
     environment:
+      STREAM_HOST: 192.168.0.126
       EXTERN_IP: 192.168.0.126
+      MediaRtmp: ${MediaRtmp:-10935}
+      MediaRtsp: ${MediaRtsp:-5540}
+      MediaRtp: ${MediaRtp:-10000}
+      ZLM_SERCERT: ${ZLM_SERCERT:-su6TiedN2rVAmBbIDX0aa0QTiBJLBdcf}
     ports:
-      - "10935:10935"
-      - "5540:5540"
-      - "6080:6080"
-      - "10000:10000/tcp"
-      - "10000:10000/udp"
-      - "8000:8000/tcp"
-      - "8000:8000/udp"
-      - "9000:9000"
-      - "4443:4443"
+     #- "6080:80/tcp"     # [播流]HTTP  安全考虑-非测试阶段需要注释掉，改为由nginx代理播流地址
+     #- "4443:443/tcp"     # [播流]HTTPS 安全考虑-非测试阶段需要注释掉，改为由nginx代理播流地址
+      - "${MediaRtmp:-10935}:${MediaRtmp:-10935}/tcp"   # [收流]RTMP  
+      - "${MediaRtmp:-10935}:${MediaRtmp:-10935}/udp"   # [收流]RTMP  
+     #- "41935:41935/tcp"   # [收流]RTMPS 无效
+      - "${MediaRtsp:-5540}:${MediaRtsp:-5540}/tcp"     # [收流]RTSP  
+      - "${MediaRtsp:-5540}:${MediaRtsp:-5540}/udp"     # [收流]RTSP  
+     #- "45540:45540/tcp"   # [收流]RTSPS 无效
+      - "${MediaRtp:-10000}:${MediaRtp:-10000}/tcp"   # [收流]RTP   
+      - "${MediaRtp:-10000}:${MediaRtp:-10000}/udp"   # [收流]RTP
     volumes:
       - ./volumes/video:/opt/media/www/record/
       - ./volumes/media/assist:/opt/media/assist/
@@ -84,8 +90,8 @@ services:
     ports:
       - "18978:18978"
       - "18081:18081"
-      - "8116:8116/udp"
-      - "8116:8116/tcp"
+      - "${SIP_PORT:-8116}:${SIP_PORT:-8116}/udp"
+      - "${SIP_PORT:-8116}:${SIP_PORT:-8116}/tcp"
       - "30000:30500"
       - "50502:50506"
       - "30000:30500/udp"
@@ -100,18 +106,30 @@ services:
       - ./logs/wvp:/opt/wvp/logs/
       - ./volumes/wvp/assist:/opt/media/assist/
     environment:
-      # 外部可查看的流ip
       STREAM_HOST: 192.168.0.126
-      # 国标信令中使用的ip，此ip为摄像机可以访问到的ip，直接使用物理网卡ip
       SDP_HOST: 192.168.0.126
-      HOOK_HOST: 192.168.0.126
+
       SIP_HOST: polaris-wvp
+      SIP_PORT: ${WVP_PORT:-8116}
+      SIP_DOMAIN: ${WVP_DOMAIN:-3402000000}
+      SIP_ID: ${WVP_ID:-34020000002000000001}
+      SIP_PWD: ${WVP_PWD:-admin123}
+
+      MediaHttp: ${WebHttp:-8080}
+      MediaRtmp: ${MediaRtmp:-10935}
+      MediaRtsp: ${MediaRtsp:-5540}
+      MediaRtp: ${MediaRtp:-10000}
+
+      ZLM_HOOK_HOST: polaris-wvp
       ZLM_HOST: polaris-media
       ZLM_PORT: 6080
+      ZLM_SSL_PORT: 4443
       ZLM_SERCERT: su6TiedN2rVAmBbIDX0aa0QTiBJLBdcf
+
       REDIS_HOST: polaris-redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD:-Data@123456}
+
       MYSQL_HOST: polaris-mysql
       MYSQL_PORT: 3306
       MYSQL_DATABASE: wvp
@@ -119,7 +137,7 @@ services:
       MYSQL_PASSWORD: root
       # 前端跨域配置，nginx容器所在物理机IP
       NGINX_HOST: http://127.0.0.1:8080
-
+      
   polaris-nginx:
     image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:latest
     networks:
@@ -127,10 +145,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - WVP_HOST=127.0.0.1
-      - WVP_PORT=18978
+      STREAM_HOST: 192.168.0.126
+      WVP_PORT: 18978
     volumes:
-      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/templates/:/etc/nginx/templates
       - ./logs/nginx:/var/log/nginx
       - ./nginx/config.js:/opt/dist/static/js/config.js
       - ./nginx/certs:/etc/nginx/certs

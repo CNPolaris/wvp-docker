@@ -10,10 +10,8 @@ RUN \
 RUN ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime && \
   echo '${TZ}' > /etc/timezone
 
-RUN rm -rf /etc/nginx/conf.d/*  
 RUN mkdir /opt/dist
 COPY ./dist /opt/dist
-COPY ./conf/nginx.conf /etc/nginx/conf.d
 
 CMD ["nginx","-g","daemon off;"]
 
