@@ -61,6 +61,8 @@ media:
   stream-ip: ${STREAM_HOST:127.0.0.1}
   # [可选] wvp在国标信令中使用的ip，此ip为摄像机可以访问到的ip， 置空使用 media.ip
   sdp-ip: ${SDP_HOST:127.0.0.1}
+  # [可选] ZLM 监听的http hook端口
+  hook-ip: ${ZLM_HOOK_HOST:127.0.0.1}
   # [可选] sslport
   http-ssl-port: ${ZLM_SSL_PORT:443}
   rtp-proxy-port: ${MediaRtp:10000}
