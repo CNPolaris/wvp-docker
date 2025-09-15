@@ -59,25 +59,17 @@ services:
       - wvp-net
     restart: always
     environment:
-      STREAM_HOST: 172.31.82.2
-      EXTERN_IP: 172.31.82.2
-      MediaRtmp: ${MediaRtmp:-10935}
-      MediaRtsp: ${MediaRtsp:-5540}
-      MediaRtp: ${MediaRtp:-10000}
-      ZLM_SERCERT: ${ZLM_SERCERT:-su6TiedN2rVAmBbIDX0aa0QTiBJLBdcf}
+      EXTERN_IP: 192.168.0.126
     ports:
-     #- "6080:80/tcp"     # [播流]HTTP  安全考虑-非测试阶段需要注释掉，改为由nginx代理播流地址
-     #- "4443:443/tcp"     # [播流]HTTPS 安全考虑-非测试阶段需要注释掉，改为由nginx代理播流地址
-      - "${MediaRtmp:-10935}:${MediaRtmp:-10935}/tcp"   # [收流]RTMP  
-      - "${MediaRtmp:-10935}:${MediaRtmp:-10935}/udp"   # [收流]RTMP  
-     #- "41935:41935/tcp"   # [收流]RTMPS 无效
-      - "${MediaRtsp:-5540}:${MediaRtsp:-5540}/tcp"     # [收流]RTSP  
-      - "${MediaRtsp:-5540}:${MediaRtsp:-5540}/udp"     # [收流]RTSP  
-     #- "45540:45540/tcp"   # [收流]RTSPS 无效
-      - "${MediaRtp:-10000}:${MediaRtp:-10000}/tcp"   # [收流]RTP   
-      - "${MediaRtp:-10000}:${MediaRtp:-10000}/udp"   # [收流]RTP
+      - "6080:6080/tcp"     # [播流]HTTP  安全考虑-非测试阶段需要注释掉，改为由nginx代理播流地址
+      - "4443:4443/tcp"     # [播流]HTTPS 安全考虑-非测试阶段需要注释掉，改为由nginx代理播流地址
+      - "10935:10935/tcp"   # [收流]RTMP  
+      - "10935:10935/udp"   # [收流]RTMP  
+      - "5540:5540/tcp"     # [收流]RTSP  
+      - "5540:5540/udp"     # [收流]RTSP  
+      - "10000:10000/tcp"   # [收流]RTP   
+      - "10000:10000/udp"   # [收流]RTP
     volumes:
-      - ./volumes/video:/opt/media/www/record/
       - ./volumes/media/assist:/opt/media/assist/
       - ./logs/media:/opt/media/log/
       - ./media/config.ini:/opt/media/conf/config.ini
@@ -106,8 +98,8 @@ services:
       - ./logs/wvp:/opt/wvp/logs/
       - ./volumes/wvp/assist:/opt/media/assist/
     environment:
-      STREAM_HOST: 172.31.82.2
-      SDP_HOST: 172.31.82.2
+      STREAM_HOST: 192.168.0.126
+      SDP_HOST: 192.168.0.126
 
       SIP_HOST: polaris-wvp
       SIP_PORT: ${WVP_PORT:-8116}
@@ -122,8 +114,8 @@ services:
 
       ZLM_HOOK_HOST: polaris-wvp
       ZLM_HOST: polaris-media
-      ZLM_PORT: 80
-      ZLM_SSL_PORT: 443
+      ZLM_PORT: 6080
+      ZLM_SSL_PORT: 4443
       ZLM_SERCERT: su6TiedN2rVAmBbIDX0aa0QTiBJLBdcf
 
       REDIS_HOST: polaris-redis
@@ -136,7 +128,7 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       # 前端跨域配置，nginx容器所在物理机IP
-      NGINX_HOST: http://127.0.0.1:8080
+      NGINX_HOST: http://192.168.0.126:8080
       
   polaris-nginx:
     image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:latest
@@ -145,7 +137,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      STREAM_HOST: 172.31.82.2
+      STREAM_HOST: 192.168.0.126
       WVP_PORT: 18978
     volumes:
       - ./nginx/templates/:/etc/nginx/templates

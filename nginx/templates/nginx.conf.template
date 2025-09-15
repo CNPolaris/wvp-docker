@@ -7,7 +7,7 @@
         
         # # ======================= 证书配置开始 =======================
         # # 指定证书文件（中间证书可以拼接至该pem文件中）
-        # ssl_certificate /etc/nginx/certs/test.com.pem;
+        # ssl_certificate /etc/nginx/certs/test.com.crt;
         # # 指定私钥文档
         # ssl_certificate_key /etc/nginx/certs/test.com.key;
         # # 配置 SSL 会话缓存，提高性能
@@ -29,6 +29,7 @@
 			root /opt/dist;
             index  index.html index.htm;
         }
+        
 		location /record_proxy/{
 			 proxy_set_header Host $http_host;
 			 proxy_set_header X-Real-IP $remote_addr;
@@ -36,12 +37,13 @@
 			 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 			 proxy_pass http://polaris-wvp:18978/;
 		}
-		location  /api/ {
+
+		location /api/ {
 			proxy_set_header Host $http_host;
 			proxy_set_header X-Real-IP $remote_addr;
 			proxy_set_header REMOTE-HOST $remote_addr;
 			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_pass http://polaris-wvp:18978/api/;
+            proxy_pass http://polaris-wvp:18978;
 
              # 从环境变量获取原始主机地址（x.x.x.x）
             set $original_host ${STREAM_HOST};
