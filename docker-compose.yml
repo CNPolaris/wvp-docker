@@ -55,8 +55,11 @@ services:
 
   polaris-media:
     image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-media:latest
-    network_mode: "host"
+    networks:
+      - wvp-net
     restart: always
+    environment:
+      EXTERN_IP: 192.168.0.126
     ports:
       - "10935:10935"
       - "5540:5540"
@@ -66,6 +69,7 @@ services:
       - "8000:8000/tcp"
       - "8000:8000/udp"
       - "9000:9000"
+      - "4443:4443"
     volumes:
       - ./volumes/video:/opt/media/www/record/
       - ./volumes/media/assist:/opt/media/assist/
@@ -74,7 +78,8 @@ services:
 
   polaris-wvp:
     image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-wvp:latest
-    network_mode: "host"
+    networks:
+      - wvp-net
     restart: always
     ports:
       - "18978:18978"
@@ -95,39 +100,40 @@ services:
       - ./logs/wvp:/opt/wvp/logs/
       - ./volumes/wvp/assist:/opt/media/assist/
     environment:
-      # 本机的IP(物理机IP)
-      SIP_HOST: 172.18.61.2
-      STREAM_HOST: 172.18.61.2
-      SDP_HOST: 172.18.61.2
-      HOOK_HOST: 172.18.61.2
-      ZLM_HOST: 127.0.0.1
+      # 外部可查看的流ip
+      STREAM_HOST: 192.168.0.126
+      # 国标信令中使用的ip，此ip为摄像机可以访问到的ip，直接使用物理网卡ip
+      SDP_HOST: 192.168.0.126
+      HOOK_HOST: 192.168.0.126
+      SIP_HOST: polaris-wvp
+      ZLM_HOST: polaris-media
       ZLM_PORT: 6080
       ZLM_SERCERT: su6TiedN2rVAmBbIDX0aa0QTiBJLBdcf
-      REDIS_HOST: 127.0.0.1
-      REDIS_PORT: 6390
+      REDIS_HOST: polaris-redis
+      REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD:-Data@123456}
-      MYSQL_HOST: 127.0.0.1
-      MYSQL_PORT: 3310
+      MYSQL_HOST: polaris-mysql
+      MYSQL_PORT: 3306
       MYSQL_DATABASE: wvp
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       # 前端跨域配置，nginx容器所在物理机IP
-      NGINX_HOST: http://172.18.61.2:8080
+      NGINX_HOST: http://127.0.0.1:8080
 
   polaris-nginx:
     image: docker.cnb.cool/polaris-tian/wvp-docker/polaris-nginx:latest
-    network_mode: "host"
+    networks:
+      - wvp-net
     ports:
       - "8080:8080"
-    depends_on:
-      - polaris-wvp
     environment:
-      - WVP_HOST=172.18.61.2
+      - WVP_HOST=127.0.0.1
       - WVP_PORT=18978
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./logs/nginx:/var/log/nginx
       - ./nginx/config.js:/opt/dist/static/js/config.js
+      - ./nginx/certs:/etc/nginx/certs
 
 networks:
   wvp-net:

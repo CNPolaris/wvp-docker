@@ -1,5 +1,5 @@
 
-window.baseUrl = "http://172.18.61.2:18978"
+window.baseUrl = "http://192.168.0.126:18978"
 
 // map组件全局参数, 注释此内容可以关闭地图功能
 window.mapParam = {

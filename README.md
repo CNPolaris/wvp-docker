@@ -10,6 +10,7 @@ wvp-docker是基于[wvp-GB28181-pro](https://github.com/648540858/wvp-GB28181-pr
 项目包含以下主要目录和文件，各自承担不同功能。
 
 - `.ide`: [cnb](cnb.cool)云开发环境配置
+- `backup`: 使用`restic`工具实现录制视频备份
 - `media`: [夏楚 ZLMediaKit](https://github.com/ZLMediaKit/ZLMediaKit)流媒体服务
 - `mysql`: wvp平台的数据库配置，当前最新版使用的是`2.7.4`版本数据库
 - `nginx`: 相比较wvp一体化部署方案，本部署方案采用的前后端分离部署方式

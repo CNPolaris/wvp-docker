@@ -22,7 +22,7 @@
 # restic -r sftp://user@ip:port//workspace/backup init
 
 # 3.Sftp backup From server A copy to server B
-# restic --repo sftp://user@ip:port//workspace/backup --password-file ./resticpassword backup /workspace/volumes/video
+# restic --repo sftp://user@ip:port//workspace/backup --password-file ./resticpassword backup /workspace/volumes/media
 
 # 4.Check
 # restic -r sftp://user@ip:port//workspace/backup --password-file ./resticpassword snapshots
