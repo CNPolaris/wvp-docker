@@ -25,6 +25,9 @@
         root /opt/dist;
         index  index.html index.htm;
 
+        set $wvp_host ${WVP_HOST};
+        set $media_host ${MEDIA_HOST};
+
         location / {
 			root /opt/dist;
             index  index.html index.htm;
@@ -35,7 +38,7 @@
 			 proxy_set_header X-Real-IP $remote_addr;
 			 proxy_set_header REMOTE-HOST $remote_addr;
 			 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-			 proxy_pass http://polaris-wvp:18978/;
+			 proxy_pass http://$wvp_host:18978/;
 		}
 
 		location /api/ {
@@ -43,7 +46,7 @@
 			proxy_set_header X-Real-IP $remote_addr;
 			proxy_set_header REMOTE-HOST $remote_addr;
 			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_pass http://polaris-wvp:18978;
+            proxy_pass http://$wvp_host:18978;
 
              # 从环境变量获取原始主机地址（x.x.x.x）
             set $original_host ${STREAM_HOST};
@@ -69,7 +72,7 @@
         # 将mediaserver/record转发到目标地址
         location /mediaserver/api/downloadFile {
             # 目标服务器地址
-            proxy_pass http://polaris-media:6080/index/api/downloadFile;
+            proxy_pass http://$media_host:6080/index/api/downloadFile;
             
             # 以下是常用的反向代理设置
             proxy_set_header Host $host;
@@ -86,7 +89,7 @@
         # 仅允许代理/rtp/开头的路径
         location ^~ /rtp/ {
             # 代理到ZLMediakit服务
-            proxy_pass http://polaris-media:6080;
+            proxy_pass http://$media_host:6080;
             
             # 基础HTTP代理配置
             proxy_set_header Host $host;
@@ -108,7 +111,7 @@
         # 仅允许代理/rtp/开头的路径
         location ^~ /mp4_record/ {
             # 代理到ZLMediakit服务
-            proxy_pass http://polaris-media:6080;
+            proxy_pass http://$media_host:6080;
             
             # 基础HTTP代理配置
             proxy_set_header Host $host;
