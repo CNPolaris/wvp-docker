@@ -54,13 +54,13 @@
             # 执行字符串替换
             # 将媒体资源文件替换为Nginx输出的相对地址
             sub_filter "http://$original_host/index/api/downloadFile" "mediaserver/api/downloadFile";
-            sub_filter "http://$original_host:6080/index/api/downloadFile" "mediaserver/api/downloadFile";
+            sub_filter "http://$original_host:80/index/api/downloadFile" "mediaserver/api/downloadFile";
             sub_filter "https://$original_host/index/api/downloadFile" "mediaserver/api/downloadFile";
-            sub_filter "https://$original_host:4443/index/api/downloadFile" "mediaserver/api/downloadFile";
+            sub_filter "https://$original_host:443/index/api/downloadFile" "mediaserver/api/downloadFile";
             sub_filter "http://$original_host/mp4_record" "mp4_record";
-            sub_filter "http://$original_host:6080/mp4_record" "mp4_record";
+            sub_filter "http://$original_host:80/mp4_record" "mp4_record";
             sub_filter "https://$original_host/mp4_record" "mp4_record";
-            sub_filter "https://$original_host:4443/mp4_record" "mp4_record";
+            sub_filter "https://$original_host:443/mp4_record" "mp4_record";
             
             # 设置为off表示替换所有匹配项，而不仅仅是第一个
             sub_filter_once off;
