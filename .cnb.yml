@@ -7,7 +7,6 @@ $:
         image: docker.cnb.cool/polaris-tian/wvp-docker:latest
         volumes:
           - /root/.m2:cow
-          - /workspace/node_modules:copy-on-write
       runner:
         cpus: 8
       services:
@@ -37,7 +36,6 @@ main:
         image: docker.cnb.cool/polaris-tian/wvp-docker/ubuntu-wvp:amd64
         volumes:
           - /root/.m2:cow
-          - /workspace/node_modules:cow
       stages:
         - name: docker login
           script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
@@ -59,7 +57,6 @@ main:
         image: docker.cnb.cool/polaris-tian/wvp-docker/ubuntu-wvp:aarch64
         volumes:
           - /root/.m2:cow
-          - /workspace/node_modules:cow
       stages:
         - name: docker login
           script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
