@@ -48,7 +48,9 @@ RUN wget https://polaris-tian-generic.pkg.coding.net/qt/dependencies/openssl-1.1
     echo "/usr/local/lib64/" >> /etc/ld.so.conf && \
     echo "/usr/local/openssl/lib" >> /etc/ld.so.conf && \
     ldconfig && \
-    ln -s /usr/local/openssl/bin/openssl  /usr/local/bin/openssl
+    ln -s /usr/local/openssl/bin/openssl  /usr/local/bin/openssl && \
+    rm /opt/media/ZLMediaKit/3rdpart/openssl-1.1.1k.tar.gz && \
+    rm -rf /opt/media/ZLMediaKit/3rdpart/openssl-1.1.1k
 
 RUN mkdir -p build release/linux/${MODEL}/
 
@@ -82,6 +84,8 @@ ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
         && echo $TZ > /etc/timezone && \
         mkdir -p /opt/media/bin/www
+
+RUN rm -rf /opt/media/ZLMediaKit
 
 WORKDIR /opt/media/bin/
 COPY --from=build /opt/media/ZLMediaKit/release/linux/${MODEL}/MediaServer /opt/media/ZLMediaKit/default.pem /opt/media/bin/
