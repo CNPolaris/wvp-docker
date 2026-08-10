@@ -22,7 +22,7 @@ RUN apt-get update && \
          apt-get install -y --no-install-recommends \
          wget \
          git \
-         openjdk-17-jdk \
+         openjdk-21-jdk \
          ffmpeg && \
          apt-get autoremove -y && \
          apt-get clean -y && \
